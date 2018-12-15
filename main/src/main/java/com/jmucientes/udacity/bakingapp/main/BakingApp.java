@@ -1,6 +1,6 @@
-package com.jmucientes.udacity.bakingapp;
+package com.jmucientes.udacity.bakingapp.main;
 
-import com.jmucientes.udacity.bakingapp.di.DaggerBakingAppComponent;
+import com.jmucientes.udacity.bakingapp.main.di.DaggerBakingAppComponent;
 
 import dagger.android.AndroidInjector;
 import dagger.android.support.DaggerApplication;

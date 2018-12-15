@@ -1,4 +1,4 @@
-package com.jmucientes.udacity.bakingapp.main.ui.main;
+package com.jmucientes.udacity.bakingapp.main.home.view;
 
 import android.arch.lifecycle.ViewModel;
 

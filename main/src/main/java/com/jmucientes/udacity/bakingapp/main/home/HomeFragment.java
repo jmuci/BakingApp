@@ -1,4 +1,4 @@
-package com.jmucientes.udacity.bakingapp.main.ui.main;
+package com.jmucientes.udacity.bakingapp.main.home;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
@@ -10,22 +10,23 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.jmucientes.udacity.bakingapp.main.R;
-import com.jmucientes.udacity.bakingapp.main.ui.main.model.Recipe;
+import com.jmucientes.udacity.bakingapp.main.model.Recipe;
+import com.jmucientes.udacity.bakingapp.main.home.view.MainViewModel;
+import com.jmucientes.udacity.bakingapp.main.home.view.RecipeAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class MainFragment extends Fragment {
+public class HomeFragment extends Fragment {
 
     private MainViewModel mViewModel;
     private RecyclerView mRecipeCardsRV;
     private RecipeAdapter mRecipeAdapter;
 
-    public static MainFragment newInstance() {
-        return new MainFragment();
+    public static HomeFragment newInstance() {
+        return new HomeFragment();
     }
 
     @Nullable

@@ -1,4 +1,4 @@
-package com.jmucientes.udacity.bakingapp.main.ui.main;
+package com.jmucientes.udacity.bakingapp.main.home.view;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.jmucientes.udacity.bakingapp.main.R;
-import com.jmucientes.udacity.bakingapp.main.ui.main.model.Recipe;
+import com.jmucientes.udacity.bakingapp.main.model.Recipe;
 
 import java.util.List;
 

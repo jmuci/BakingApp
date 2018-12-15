@@ -1,4 +1,4 @@
-package com.jmucientes.udacity.bakingapp.main.di;
+package com.jmucientes.udacity.bakingapp.main.home.di;
 
 import dagger.Module;
 

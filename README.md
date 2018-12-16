@@ -19,7 +19,8 @@ One of the skills you will demonstrate in this project is how to handle unexpect
 * [X] Set up Recycler view for MainFragment with Card Views <br>
 * [X] Setup Dagger 
 * [X] Design and implement View Model Skeleton with Repository Patten
-* [ ] Implement model of Json objects (Recipe, Steps, Ingredients)
+* [X] Implement model of Json objects (Recipe, Steps, Ingredients)
+* [ ] Implement DataBinding for the cards
 * [ ] Implement Json fetching with Retrofit as part of Repository
 * [ ] Complete View Model implementation, including using of Data Binding for the card views.
 * [ ] Add video thumbnails to CardViews

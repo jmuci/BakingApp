@@ -1,6 +1,5 @@
 package com.jmucientes.udacity.bakingapp.main.data;
 
-import android.accounts.NetworkErrorException;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
@@ -8,8 +7,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jmucientes.udacity.bakingapp.main.model.Recipe;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;

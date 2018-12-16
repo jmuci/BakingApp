@@ -3,6 +3,7 @@ package com.jmucientes.udacity.bakingapp.main.home.view;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -17,6 +18,7 @@ import javax.inject.Inject;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
 
+    private static final String TAG = RecipeAdapter.class.getName();
     private List<Recipe> mRecipeList;
 
     public class RecipeViewHolder extends RecyclerView.ViewHolder {
@@ -37,7 +39,9 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     }
 
     public void updateDataSet(List<Recipe> recipeList) {
+        Log.d(TAG, "Updating data set. List size : " + recipeList.size());
         mRecipeList = recipeList;
+        notifyDataSetChanged();
     }
 
     @NonNull

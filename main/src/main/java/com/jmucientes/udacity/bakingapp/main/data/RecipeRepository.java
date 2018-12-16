@@ -1,8 +1,11 @@
 package com.jmucientes.udacity.bakingapp.main.data;
 
+import android.accounts.NetworkErrorException;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.jmucientes.udacity.bakingapp.main.model.Recipe;
 
 import java.util.ArrayList;
@@ -19,8 +22,13 @@ public class RecipeRepository {
 
     public LiveData<List<Recipe>> getRecipes() {
         final MutableLiveData<List<Recipe>> data = new MutableLiveData<>();
+
         // TODO Replace with a network call or cache.
-        data.setValue(new ArrayList<>(Arrays.asList(new Recipe(), new Recipe(), new Recipe())));
+        String jsonResponse = Network.requestRecipeJson();
+        //List<Recipe> recipeList = new Gson().fromJson(jsonResponse, Recipe.class);
+        List<Recipe> recipeList = new Gson().fromJson(jsonResponse,  new TypeToken<List<Recipe>>(){}.getType());
+
+        data.setValue(recipeList);
         return data;
     }
 

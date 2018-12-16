@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.jmucientes.udacity.bakingapp.main.R;
 import com.jmucientes.udacity.bakingapp.main.home.view.RecipeViewModel;
@@ -27,6 +28,7 @@ public class HomeFragment extends DaggerFragment {
     RecipeAdapter mRecipeAdapter;
     @Inject
     ViewModelProvider.Factory mViewModelFactory;
+    private ProgressBar mProgressBar;
 
     @Inject
     public HomeFragment() {
@@ -38,6 +40,7 @@ public class HomeFragment extends DaggerFragment {
                              @Nullable Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.home_fragment, container, false);
         mRecipeCardsRV = view.findViewById(R.id.recipes_recycler_view);
+        mProgressBar = view.findViewById(R.id.progress_bar);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -55,7 +58,10 @@ public class HomeFragment extends DaggerFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(RecipeViewModel.class);
-        mViewModel.getRecipeList().observe(this, recipeList -> mRecipeAdapter.updateDataSet(recipeList));
+        mViewModel.getRecipeList().observe(this, recipeList -> {
+            if (recipeList != null && recipeList.size() > 0) mProgressBar.setVisibility(View.GONE);
+            mRecipeAdapter.updateDataSet(recipeList);
+        });
     }
 
 }

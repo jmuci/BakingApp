@@ -15,9 +15,10 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/card_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Recipe Sample Title"
+            android:textSize="34sp"
             android:textStyle="bold" />
 
         <TextView

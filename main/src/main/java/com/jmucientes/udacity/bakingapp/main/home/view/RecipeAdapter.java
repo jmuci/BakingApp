@@ -5,6 +5,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -23,13 +24,15 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
     public class RecipeViewHolder extends RecyclerView.ViewHolder {
 
-        private final TextView mTextView;
+        private final TextView mCounterTv;
+        private final TextView mTitleTv;
         CardView mCardView;
 
         public RecipeViewHolder(@NonNull CardView itemView) {
             super(itemView);
             mCardView = itemView;
-            mTextView = mCardView.findViewById(R.id.card_counter);
+            mTitleTv = mCardView.findViewById(R.id.card_title);
+            mCounterTv = mCardView.findViewById(R.id.card_counter);
         }
     }
 
@@ -53,9 +56,10 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecipeViewHolder recipeViewHolder, int i) {
+    public void onBindViewHolder(@NonNull RecipeViewHolder recipeViewHolder, int pos) {
         //TODO Remove sample code
-        recipeViewHolder.mTextView.setText("Card number: " + i );
+        recipeViewHolder.mTitleTv.setText(mRecipeList.get(pos).getName());
+        recipeViewHolder.mCounterTv.setText("Card number: " + pos);
     }
 
     @Override

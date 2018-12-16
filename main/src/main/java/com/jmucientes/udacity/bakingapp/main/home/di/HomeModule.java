@@ -12,5 +12,5 @@ public abstract class HomeModule {
     @FragmentScoped
     @ContributesAndroidInjector
     abstract HomeFragment homeFragment();
-    
+
 }

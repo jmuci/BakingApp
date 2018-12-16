@@ -1,5 +1,6 @@
 package com.jmucientes.udacity.bakingapp.main.home;
 
+import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -24,6 +25,8 @@ public class HomeFragment extends DaggerFragment {
     private RecyclerView mRecipeCardsRV;
     @Inject
     RecipeAdapter mRecipeAdapter;
+    @Inject
+    ViewModelProvider.Factory mViewModelFactory;
 
     @Inject
     public HomeFragment() {
@@ -44,8 +47,6 @@ public class HomeFragment extends DaggerFragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         mRecipeCardsRV.setLayoutManager(layoutManager);
 
-        //TODO Remove fake list
-        //mRecipeAdapter = new RecipeAdapter(new ArrayList<>(Arrays.asList(new Recipe(), new Recipe(), new Recipe())));
         mRecipeCardsRV.setAdapter(mRecipeAdapter);
         return view;
     }
@@ -53,10 +54,8 @@ public class HomeFragment extends DaggerFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        // TODO: Inject with Dagger
-        mViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
+        mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(HomeViewModel.class);
         mViewModel.getRecipeList().observe(this, recipeList -> mRecipeAdapter.updateDataSet(recipeList));
-        //mViewModel.init(null);
     }
 
 }

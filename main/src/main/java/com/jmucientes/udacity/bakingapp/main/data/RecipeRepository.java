@@ -9,7 +9,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class RecipeRepository {
+
+    @Inject
+    public RecipeRepository() {
+    }
 
     public LiveData<List<Recipe>> getRecipes() {
         final MutableLiveData<List<Recipe>> data = new MutableLiveData<>();

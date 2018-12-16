@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.jmucientes.udacity.bakingapp.main.R;
 import com.jmucientes.udacity.bakingapp.main.model.Recipe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -31,7 +32,11 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     }
 
     @Inject
-    public RecipeAdapter(List<Recipe> recipeList) {
+    public RecipeAdapter() {
+        mRecipeList = new ArrayList<>();
+    }
+
+    public void updateDataSet(List<Recipe> recipeList) {
         mRecipeList = recipeList;
     }
 

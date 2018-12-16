@@ -20,7 +20,7 @@ One of the skills you will demonstrate in this project is how to handle unexpect
 * [X] Setup Dagger 
 * [X] Design and implement View Model Skeleton with Repository Patten
 * [X] Implement model of Json objects (Recipe, Steps, Ingredients)
-* [ ] Implement Loading view (eg. spinner)
+* [X] Implement Loading Animation (ProgresBar)
 * [X] Implement Json fetching with Retrofit as part of Repository
 * [ ] Complete View Model implementation, including using of Data Binding for the card views.
 * [ ] Add video thumbnails to CardViews

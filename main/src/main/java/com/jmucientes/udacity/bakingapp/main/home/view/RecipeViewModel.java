@@ -18,14 +18,14 @@ import javax.inject.Inject;
  * This {@ViewModel} will hold data to be shown in the card list view on the home view.
  */
 @ApplicationScope
-public class HomeViewModel extends AndroidViewModel {
+public class RecipeViewModel extends AndroidViewModel {
 
-    private static final String TAG = HomeViewModel.class.getName();
+    private static final String TAG = RecipeViewModel.class.getName();
     private final LiveData<List<Recipe>> mRecipeList;
     private final RecipeRepository mRecipeRepository;
 
     @Inject
-    public HomeViewModel(@NonNull BakingApp application, @NonNull RecipeRepository recipeRepository) {
+    public RecipeViewModel(@NonNull BakingApp application, @NonNull RecipeRepository recipeRepository) {
         super(application);
         mRecipeRepository = recipeRepository;
         

@@ -1,6 +1,7 @@
 package com.jmucientes.udacity.bakingapp.main.di;
 
 import com.jmucientes.udacity.bakingapp.main.BakingApp;
+import com.jmucientes.udacity.bakingapp.main.data.network.NetworkModule;
 import com.jmucientes.udacity.bakingapp.main.di.scopes.ApplicationScope;
 
 import dagger.BindsInstance;
@@ -12,6 +13,7 @@ import dagger.android.support.AndroidSupportInjectionModule;
         AndroidSupportInjectionModule.class,
         BakingAppModule.class,
         ViewModelsModule.class,
+        NetworkModule.class,
         ActivityBindingModule.class
 })
 @ApplicationScope

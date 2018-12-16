@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jmucientes.udacity.bakingapp.main.R;
-import com.jmucientes.udacity.bakingapp.main.home.view.HomeViewModel;
+import com.jmucientes.udacity.bakingapp.main.home.view.RecipeViewModel;
 import com.jmucientes.udacity.bakingapp.main.home.view.RecipeAdapter;
 
 import javax.inject.Inject;
@@ -21,7 +21,7 @@ import dagger.android.support.DaggerFragment;
 
 public class HomeFragment extends DaggerFragment {
 
-    private HomeViewModel mViewModel;
+    private RecipeViewModel mViewModel;
     private RecyclerView mRecipeCardsRV;
     @Inject
     RecipeAdapter mRecipeAdapter;
@@ -54,7 +54,7 @@ public class HomeFragment extends DaggerFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(HomeViewModel.class);
+        mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(RecipeViewModel.class);
         mViewModel.getRecipeList().observe(this, recipeList -> mRecipeAdapter.updateDataSet(recipeList));
     }
 

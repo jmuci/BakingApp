@@ -3,12 +3,8 @@ package com.jmucientes.udacity.bakingapp.main.data;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.jmucientes.udacity.bakingapp.main.data.network.GetDataService;
-import com.jmucientes.udacity.bakingapp.main.data.network.RetrofitClient;
+import com.jmucientes.udacity.bakingapp.main.data.network.DataService;
 import com.jmucientes.udacity.bakingapp.main.model.Recipe;
 
 import java.util.List;
@@ -23,8 +19,11 @@ public class RecipeRepository {
 
     private String TAG = RecipeRepository.class.getName();
 
+    private final DataService mDataService;
+
     @Inject
-    public RecipeRepository() {
+    public RecipeRepository(DataService dataService) {
+        mDataService = dataService;
     }
 
     public LiveData<List<Recipe>> getRecipes() {
@@ -35,8 +34,7 @@ public class RecipeRepository {
 
     private LiveData<List<Recipe>> fetchAllRecipesFromNetwork() {
         final MutableLiveData<List<Recipe>> data = new MutableLiveData<>();
-        GetDataService service = RetrofitClient.getRetrofitInstance().create(GetDataService.class);
-        service.getAllRecipes().enqueue(new Callback<List<Recipe>>() {
+        mDataService.getAllRecipes().enqueue(new Callback<List<Recipe>>() {
             @Override
             public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
                 Log.i(TAG, "Got successful response from server. Code: " + response.code());

@@ -21,24 +21,36 @@ public class RecipeRepository {
 
     private final DataService mDataService;
 
+    private final RecipeCache mRecipeCache;
+
     @Inject
-    public RecipeRepository(DataService dataService) {
+    public RecipeRepository(DataService dataService, RecipeCache recipeCache) {
         mDataService = dataService;
+        mRecipeCache = recipeCache;
     }
 
     public LiveData<List<Recipe>> getRecipes() {
         Log.d(TAG, "Get recipes. ");
-        //TODO Implement caching
+
+        List<Recipe> cachedRecipeList = mRecipeCache.getRecipes();
+        if (cachedRecipeList != null && cachedRecipeList.size() > 0) {
+            MutableLiveData<List<Recipe>> cachedRecipesLiveData = new MutableLiveData<>();
+            cachedRecipesLiveData.setValue(cachedRecipeList);
+            Log.d(TAG, "Got recipes from local cache. ");
+            return cachedRecipesLiveData;
+        }
         return fetchAllRecipesFromNetwork();
     }
 
     private LiveData<List<Recipe>> fetchAllRecipesFromNetwork() {
         final MutableLiveData<List<Recipe>> data = new MutableLiveData<>();
+        Log.d(TAG, "Requesting recipe list from Network.");
         mDataService.getAllRecipes().enqueue(new Callback<List<Recipe>>() {
             @Override
             public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
-                Log.i(TAG, "Got successful response from server. Code: " + response.code());
+                Log.d(TAG, "Got successful response from server. Code: " + response.code());
                 data.setValue(response.body());
+                mRecipeCache.saveRecipes(response.body());
             }
 
             @Override

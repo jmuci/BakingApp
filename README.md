@@ -22,10 +22,11 @@ One of the skills you will demonstrate in this project is how to handle unexpect
 * [X] Implement model of Json objects (Recipe, Steps, Ingredients)
 * [X] Implement Loading Animation (ProgresBar)
 * [X] Implement Json fetching with Retrofit as part of Repository
-* [ ] Complete View Model implementation, including using of Data Binding for the card views.
-* [ ] Add video thumbnails to CardViews
-* [ ] Support fallback case if Network request fails to deliver the recipes
+* [X] Support fallback case if Network request fails to deliver the recipes (caching?)
 * [ ] Clicking on a card opens a new Fragment, implement Adaptative UI for Tablets.
 * [ ] Implement list of steps according to mock up, as a Recycler View List
+* [ ] Map images to each recipe by ID.
 * [ ] Implement View Playback of the Recipes using Exo Player
+* [ ] Add video thumbnails to CardViews or images. Consider using a transformer that set image based on id.
+* [ ] Complete View Model implementation, including using of Data Binding for the card views.
 * [ ] Write Esspresso Test

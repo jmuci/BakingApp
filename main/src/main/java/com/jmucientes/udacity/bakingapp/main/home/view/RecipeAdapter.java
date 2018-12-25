@@ -42,7 +42,8 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     }
 
     public void updateDataSet(List<Recipe> recipeList) {
-        Log.d(TAG, "Updating data set. List size : " + recipeList.size());
+        if (recipeList != null)
+            Log.d(TAG, "Updating data set. List size : " + recipeList.size());
         mRecipeList = recipeList;
         notifyDataSetChanged();
     }

@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.jmucientes.udacity.bakingapp.main.R;
 import com.jmucientes.udacity.bakingapp.main.home.view.RecipeViewModel;
@@ -59,8 +60,12 @@ public class HomeFragment extends DaggerFragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(RecipeViewModel.class);
         mViewModel.getRecipeList().observe(this, recipeList -> {
-            if (recipeList != null && recipeList.size() > 0) mProgressBar.setVisibility(View.GONE);
-            mRecipeAdapter.updateDataSet(recipeList);
+            mProgressBar.setVisibility(View.GONE);
+            if (recipeList != null && recipeList.size() > 0) {
+                mRecipeAdapter.updateDataSet(recipeList);
+            } else if (recipeList == null) {
+                Toast.makeText(this.getContext(), "Failed to reach server. Try again later", Toast.LENGTH_LONG).show();
+            }
         });
     }
 

@@ -36,4 +36,8 @@ public class RecipeViewModel extends AndroidViewModel {
     public LiveData<List<Recipe>> getRecipeList() {
         return mRecipeList;
     }
+
+    public LiveData<List<Recipe>> refreshData() {
+        return mRecipeRepository.refreshData();
+    }
 }

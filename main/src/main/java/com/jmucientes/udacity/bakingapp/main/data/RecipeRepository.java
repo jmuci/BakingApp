@@ -56,11 +56,14 @@ public class RecipeRepository {
             @Override
             public void onFailure(Call<List<Recipe>> call, Throwable t) {
                 Log.e(TAG, "Network request failed. Error: " + t.getMessage());
-                //TODO Show message in the UI
                 data.setValue(null);
             }
         });
         return data;
 
+    }
+
+    public LiveData<List<Recipe>> refreshData() {
+        return fetchAllRecipesFromNetwork();
     }
 }

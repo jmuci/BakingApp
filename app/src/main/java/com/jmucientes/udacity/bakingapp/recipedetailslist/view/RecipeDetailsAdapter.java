@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.jmucientes.udacity.bakingapp.R;
 import com.jmucientes.udacity.bakingapp.model.Step;
 
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsAdap
     @NonNull
     @Override
     public DetailViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        TextView stepTV = (TextView) LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
+        TextView stepTV = (TextView) LayoutInflater.from(parent.getContext()).inflate(R.layout.details_list_item, parent, false);
         return new DetailViewHolder(stepTV);
     }
 
@@ -48,5 +49,10 @@ public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsAdap
     @Override
     public int getItemCount() {
         return mStepList.size();
+    }
+
+    public void updateDataSet(List<Step> steps) {
+        if (steps != null)
+            mStepList = steps;
     }
 }

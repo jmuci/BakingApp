@@ -1,16 +1,22 @@
 package com.jmucientes.udacity.bakingapp.home.view;
 
+import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.jmucientes.udacity.bakingapp.MainActivity;
 import com.jmucientes.udacity.bakingapp.R;
 import com.jmucientes.udacity.bakingapp.model.Recipe;
+import com.jmucientes.udacity.bakingapp.recipedetailslist.RecipeDetailListFragment;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +26,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
     private static final String TAG = RecipeAdapter.class.getName();
     private List<Recipe> mRecipeList;
+    private WeakReference<Context> mContextWeakReference;
 
     public class RecipeViewHolder extends RecyclerView.ViewHolder {
 
@@ -50,8 +57,8 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     @NonNull
     @Override
     public RecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-
         CardView recipeCardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.recipe_card_view, parent, false);
+        mContextWeakReference = new WeakReference<>(parent.getContext());
         return new RecipeViewHolder(recipeCardView);
     }
 
@@ -60,6 +67,21 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         //TODO Remove sample code
         recipeViewHolder.mTitleTv.setText(mRecipeList.get(pos).getName());
         recipeViewHolder.mCounterTv.setText("Card number: " + pos);
+        recipeViewHolder.mCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navigateToStepDetailsViewFragment(mRecipeList.get(pos));
+            }
+        });
+    }
+
+    private void navigateToStepDetailsViewFragment(Recipe recipe) {
+        RecipeDetailListFragment recipeDetailListFragment = new RecipeDetailListFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(RecipeDetailListFragment.ARG_RECIPE, recipe);
+        recipeDetailListFragment.setArguments(args);
+
+        ((MainActivity) mContextWeakReference.get()).navigateToFragment(recipeDetailListFragment);
     }
 
     @Override

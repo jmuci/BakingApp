@@ -25,7 +25,7 @@ One of the skills you will demonstrate in this project is how to handle unexpect
 * [X] Support fallback case if Network request fails to deliver the recipes (caching?)
 * [X] Show error if Data Loading fails
 * [X] Implement Pull to Refresh
-* [ ] Clicking on a card opens a new Fragment, implement Adaptative UI for Tablets.
+* [X] Clicking on a card opens a new Fragment, implement Adaptative UI for Tablets.
 * [ ] Implement list of steps according to mock up, as a Recycler View List
 * [ ] Map images to each recipe by ID.
 * [ ] Implement View Playback of the Recipes using Exo Player

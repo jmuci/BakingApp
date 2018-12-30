@@ -1,6 +1,7 @@
 package com.jmucientes.udacity.bakingapp.recipedetailslist.view;
 
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -26,10 +27,12 @@ public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsAdap
     public class DetailViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView mDetailsShortDescriptionTV;
+        private final TextView mStepNumber;
 
-        public DetailViewHolder(@NonNull TextView itemView) {
+        public DetailViewHolder(@NonNull ConstraintLayout itemView) {
             super(itemView);
-            mDetailsShortDescriptionTV = itemView;
+            mStepNumber = itemView.findViewById(R.id.step_number);
+            mDetailsShortDescriptionTV = itemView.findViewById(R.id.short_desc);
 
         }
     }
@@ -37,12 +40,13 @@ public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsAdap
     @NonNull
     @Override
     public DetailViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        TextView stepTV = (TextView) LayoutInflater.from(parent.getContext()).inflate(R.layout.details_list_item, parent, false);
+        ConstraintLayout stepTV = (ConstraintLayout) LayoutInflater.from(parent.getContext()).inflate(R.layout.step_list_item, parent, false);
         return new DetailViewHolder(stepTV);
     }
 
     @Override
     public void onBindViewHolder(@NonNull DetailViewHolder detailViewHolder, int position) {
+        detailViewHolder.mStepNumber.setText(String.valueOf(position + 1));
         detailViewHolder.mDetailsShortDescriptionTV.setText(mStepList.get(position).getShortDescription());
     }
 

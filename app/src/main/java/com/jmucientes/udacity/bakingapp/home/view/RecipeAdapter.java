@@ -57,7 +57,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     @NonNull
     @Override
     public RecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        CardView recipeCardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.recipe_card_view, parent, false);
+        CardView recipeCardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.recipe_card_item, parent, false);
         mContextWeakReference = new WeakReference<>(parent.getContext());
         return new RecipeViewHolder(recipeCardView);
     }
@@ -81,7 +81,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         args.putParcelable(RecipeDetailListFragment.ARG_RECIPE, recipe);
         recipeDetailListFragment.setArguments(args);
 
-        ((MainActivity) mContextWeakReference.get()).navigateToFragment(recipeDetailListFragment);
+        ((MainActivity) mContextWeakReference.get()).navigateToFragmentAndSetToolbarTitle(recipeDetailListFragment, recipe.getName());
     }
 
     @Override

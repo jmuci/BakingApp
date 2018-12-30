@@ -18,6 +18,7 @@ public class MainActivity extends DaggerAppCompatActivity implements FragmentMan
     private static final String TAG = MainActivity.class.getName();
     @Inject
     Lazy<HomeFragment> mHomeFragmentProvider;
+    private String mToolbarTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +46,17 @@ public class MainActivity extends DaggerAppCompatActivity implements FragmentMan
         shouldDisplayHomeUp();
     }
 
-    public void shouldDisplayHomeUp(){
+    public void shouldDisplayHomeUp() {
         //Enable Up button only  if there are entries in the back stack
-        boolean canGoBack = getSupportFragmentManager().getBackStackEntryCount()>0;
-        getSupportActionBar().setDisplayHomeAsUpEnabled(canGoBack);
+        boolean canGoBack = getSupportFragmentManager().getBackStackEntryCount() > 0;
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(canGoBack);
+            if (canGoBack) {
+                getSupportActionBar().setTitle(mToolbarTitle);
+            } else {
+                getSupportActionBar().setTitle(R.string.app_name);
+            }
+        }
     }
 
     @Override
@@ -56,6 +64,11 @@ public class MainActivity extends DaggerAppCompatActivity implements FragmentMan
         //This method is called when the up button is pressed. Just the pop back stack.
         getSupportFragmentManager().popBackStack();
         return true;
+    }
+
+    public void navigateToFragmentAndSetToolbarTitle(Fragment fragment, String toolbarTitle) {
+        mToolbarTitle = toolbarTitle;
+        navigateToFragment(fragment);
     }
 
     public void navigateToFragment(Fragment fragment) {

@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">BakingApp</string>
     <string name="ingredients_title">Ingredients</string>
+    <string name="previous_step_cont_desc">Previous Step</string>
+    <string name="next_step_cont_desc">Next Step</string>
+    <string name="recipe_description_cont_desc">Recipe description</string>
 </resources>

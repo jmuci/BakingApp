@@ -81,7 +81,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         args.putParcelable(RecipeDetailListFragment.ARG_RECIPE, recipe);
         recipeDetailListFragment.setArguments(args);
 
-        ((MainActivity) mContextWeakReference.get()).navigateToFragment(recipeDetailListFragment);
+        ((MainActivity) mContextWeakReference.get()).navigateToFragmentAndSetToolbarTitle(recipeDetailListFragment, recipe.getName());
     }
 
     @Override

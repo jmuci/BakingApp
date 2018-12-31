@@ -9,12 +9,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jmucientes.udacity.bakingapp.MainActivity;
 import com.jmucientes.udacity.bakingapp.R;
+import com.jmucientes.udacity.bakingapp.data.ImagesByIdMapUtil;
 import com.jmucientes.udacity.bakingapp.model.Recipe;
 import com.jmucientes.udacity.bakingapp.recipedetailslist.RecipeDetailListFragment;
+import com.squareup.picasso.Picasso;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -30,15 +33,19 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
     public class RecipeViewHolder extends RecyclerView.ViewHolder {
 
-        private final TextView mCounterTv;
+        private final TextView mStepsCount;
         private final TextView mTitleTv;
+        private final TextView mServingsTv;
+        private final ImageView mRecipeImage;
         CardView mCardView;
 
         public RecipeViewHolder(@NonNull CardView itemView) {
             super(itemView);
             mCardView = itemView;
+            mRecipeImage = mCardView.findViewById(R.id.recipe_image);
             mTitleTv = mCardView.findViewById(R.id.card_title);
-            mCounterTv = mCardView.findViewById(R.id.card_counter);
+            mServingsTv = mCardView.findViewById(R.id.recipe_servings);
+            mStepsCount = mCardView.findViewById(R.id.number_of_steps);
         }
     }
 
@@ -64,15 +71,18 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
     @Override
     public void onBindViewHolder(@NonNull RecipeViewHolder recipeViewHolder, int pos) {
-        //TODO Remove sample code
+        bindImageById(mRecipeList.get(pos).getId(), recipeViewHolder.mRecipeImage);
         recipeViewHolder.mTitleTv.setText(mRecipeList.get(pos).getName());
-        recipeViewHolder.mCounterTv.setText("Card number: " + pos);
-        recipeViewHolder.mCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                navigateToStepDetailsViewFragment(mRecipeList.get(pos));
-            }
-        });
+        recipeViewHolder.mServingsTv.setText(
+                String.format(
+                        String.valueOf(mContextWeakReference.get().getResources().getText(R.string.servings_label)),
+                        mRecipeList.get(pos).getServings()));
+        recipeViewHolder.mStepsCount.setText(
+                String.format(
+                        String.valueOf(mContextWeakReference.get().getResources().getText(R.string.number_of_steps_lable)),
+                        mRecipeList.get(pos).getSteps().size())
+        );
+        recipeViewHolder.mCardView.setOnClickListener(view -> navigateToStepDetailsViewFragment(mRecipeList.get(pos)));
     }
 
     private void navigateToStepDetailsViewFragment(Recipe recipe) {
@@ -87,5 +97,15 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     @Override
     public int getItemCount() {
         return mRecipeList != null? mRecipeList.size() : 0;
+    }
+
+
+    private void bindImageById(int id, ImageView imageView) {
+        Picasso.get()
+                .load(ImagesByIdMapUtil.getImageUriFromId(id))
+                .fit().centerCrop()
+                .placeholder(R.drawable.ic_photo_gray_64dp)
+                .error(R.drawable.ic_broken_image_gray_64dp)
+                .into(imageView);
     }
 }

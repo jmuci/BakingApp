@@ -4,4 +4,7 @@
     <string name="previous_step_cont_desc">Previous Step</string>
     <string name="next_step_cont_desc">Next Step</string>
     <string name="recipe_description_cont_desc">Recipe description</string>
+    <string name="completed_recipe_result">Completed recipe result</string>
+    <string name="servings_label">Servings %s.</string>
+    <string name="number_of_steps_lable">Number of steps: %s</string>
 </resources>

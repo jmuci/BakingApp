@@ -34,7 +34,8 @@ public class StepDetailFragment extends DaggerFragment {
         Bundle extras = getArguments();
         if (extras != null) {
             Step step = extras.getParcelable(ARG_STEP);
-            mStepDescription.setText(step.getDescription());
+            if (step !=null )
+                mStepDescription.setText(step.getDescription());
         }
         return view;
     }

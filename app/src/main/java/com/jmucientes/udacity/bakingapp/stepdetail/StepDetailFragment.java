@@ -4,6 +4,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,16 +26,19 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 
+
 public class StepDetailFragment extends DaggerFragment {
 
     public static final String ARG_STEP = "step_parcelable";
-    ;
+    private final static String TAG = StepDetailFragment.class.getName();
 
     private TextView mStepDescription;
     private SimpleExoPlayerView mPlayerView;
 
     @Inject
     SimpleExoPlayer mPlayer;
+    @Inject
+    DataSource.Factory mDataSourceFactory;
 
     @Inject
     public StepDetailFragment() {
@@ -51,7 +56,11 @@ public class StepDetailFragment extends DaggerFragment {
             Step step = extras.getParcelable(ARG_STEP);
             if (step != null) {
                 mStepDescription.setText(step.getDescription());
-                initializePlayer(Uri.parse(step.getVideoURL()));
+                if (!TextUtils.isEmpty(step.getVideoURL())) {
+                    initializePlayer(Uri.parse(step.getVideoURL()));
+                } else {
+                    mPlayerView.setVisibility(View.GONE);
+                }
             }
         }
 
@@ -62,10 +71,8 @@ public class StepDetailFragment extends DaggerFragment {
         if (mPlayer != null && mp4VideoUri != null) {
             mPlayerView.setPlayer(mPlayer);
             // Produces DataSource instances through which media data is loaded.
-            DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(getActivity(),
-                    Util.getUserAgent(getActivity(), "BakingApp"));
             // This is the MediaSource representing the media to be played.
-            MediaSource videoSource = new ExtractorMediaSource(mp4VideoUri, dataSourceFactory, new DefaultExtractorsFactory(), null, null);
+            MediaSource videoSource = new ExtractorMediaSource(mp4VideoUri, mDataSourceFactory, new DefaultExtractorsFactory(), null, null);
             // Prepare the player with the source.
             mPlayer.prepare(videoSource);
             mPlayer.setPlayWhenReady(true);
@@ -80,12 +87,6 @@ public class StepDetailFragment extends DaggerFragment {
     @Override
     public void onStop() {
         super.onStop();
-        releasePlayer();
-    }
-
-    private void releasePlayer() {
         mPlayer.stop();
-        mPlayer.release();
-        mPlayer = null;
     }
 }

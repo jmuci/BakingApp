@@ -28,7 +28,7 @@ One of the skills you will demonstrate in this project is how to handle unexpect
 * [X] Clicking on a card opens a new Fragment
 * [X] Implement list of steps according to mock up, as a Recycler View List
 * [X] Clicking on Steps, opens detailed step View which will hold video.
-* [ ] Implement View Playback of the Recipes using Exo Player
+* [X] Implement View Playback of the Recipes using Exo Player
 * [X] Map images to each recipe by ID.
 * [ ] Use ViewPager to navigate across steps
 * [ ] Add video thumbnails to CardViews or images. Consider using a transformer that set image based on id.

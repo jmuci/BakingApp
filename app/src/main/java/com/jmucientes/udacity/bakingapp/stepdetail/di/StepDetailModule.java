@@ -12,4 +12,5 @@ public abstract class StepDetailModule {
     @FragmentScoped
     @ContributesAndroidInjector
     abstract StepDetailFragment stepDetailFragment();
+
 }

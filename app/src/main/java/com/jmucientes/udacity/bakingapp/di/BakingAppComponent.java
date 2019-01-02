@@ -14,6 +14,7 @@ import dagger.android.support.AndroidSupportInjectionModule;
         BakingAppModule.class,
         ViewModelsModule.class,
         NetworkModule.class,
+        VideoPlayerModule.class,
         ActivityBindingModule.class
 })
 @ApplicationScope

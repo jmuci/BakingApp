@@ -1,5 +1,6 @@
 package com.jmucientes.udacity.bakingapp.stepdetail.di;
 
+import com.jmucientes.udacity.bakingapp.di.VideoPlayerModule;
 import com.jmucientes.udacity.bakingapp.di.scopes.FragmentScoped;
 import com.jmucientes.udacity.bakingapp.stepdetail.StepDetailFragment;
 
@@ -10,7 +11,7 @@ import dagger.android.ContributesAndroidInjector;
 public abstract class StepDetailModule {
 
     @FragmentScoped
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = VideoPlayerModule.class)
     abstract StepDetailFragment stepDetailFragment();
 
 }

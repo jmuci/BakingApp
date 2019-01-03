@@ -85,5 +85,7 @@ public class StepDetailFragment extends DaggerFragment {
     public void onStop() {
         super.onStop();
         mPlayer.stop();
+        mPlayer.release();
+        mPlayer = null;
     }
 }

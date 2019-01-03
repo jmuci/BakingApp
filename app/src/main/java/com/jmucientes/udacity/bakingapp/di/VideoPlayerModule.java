@@ -9,8 +9,8 @@ import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
-import com.jmucientes.udacity.bakingapp.BakingApp;
-import com.jmucientes.udacity.bakingapp.di.scopes.ApplicationScope;
+import com.jmucientes.udacity.bakingapp.MainActivity;
+import com.jmucientes.udacity.bakingapp.di.scopes.FragmentScoped;
 
 import dagger.Module;
 import dagger.Provides;
@@ -18,31 +18,26 @@ import dagger.Provides;
 @Module
 public class VideoPlayerModule {
 
-    private static SimpleExoPlayer mExoPlayer;
-
-    @ApplicationScope
+    @FragmentScoped
     @Provides
-    static SimpleExoPlayer simpleExoPlayerProvider(BakingApp bakingApp, TrackSelector trackSelector, LoadControl loadControl) {
-        if (mExoPlayer == null) {
-            mExoPlayer = ExoPlayerFactory.newSimpleInstance(bakingApp, trackSelector, loadControl);
-        }
-        return mExoPlayer;
+    static SimpleExoPlayer simpleExoPlayerProvider(MainActivity mainActivity, TrackSelector trackSelector, LoadControl loadControl) {
+        return  ExoPlayerFactory.newSimpleInstance(mainActivity, trackSelector, loadControl);
     }
 
-    @ApplicationScope
+    @FragmentScoped
     @Provides
-    static DataSource.Factory dataSourceFactoryProvider(BakingApp bakingApp) {
-        return new DefaultDataSourceFactory(bakingApp,
-                Util.getUserAgent(bakingApp, "BakingApp"));
+    static DataSource.Factory dataSourceFactoryProvider(MainActivity mainActivity) {
+        return new DefaultDataSourceFactory(mainActivity,
+                Util.getUserAgent(mainActivity, "BakingApp"));
     }
 
-    @ApplicationScope
+    @FragmentScoped
     @Provides
     static TrackSelector trackSelectorProvider() {
         return new DefaultTrackSelector();
     }
 
-    @ApplicationScope
+    @FragmentScoped
     @Provides
     static LoadControl loadControlProvider() {
         return new DefaultLoadControl();

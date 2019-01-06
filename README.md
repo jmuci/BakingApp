@@ -30,8 +30,10 @@ One of the skills you will demonstrate in this project is how to handle unexpect
 * [X] Clicking on Steps, opens detailed step View which will hold video.
 * [X] Implement View Playback of the Recipes using Exo Player
 * [X] Map images to each recipe by ID.
+* [X] Restore playback state on rotation and add full screen.
 * [ ] Use ViewPager to navigate across steps
-* [ ] Add video thumbnails to CardViews or images. Consider using a transformer that set image based on id.
 * [ ] Implement Adaptative UI for Tablets.
+* [ ] Application has a companion homescreen widget. 
+* [ ] Widget displays ingredient list for desired recipe.
 * [ ] Complete View Model implementation, including using of Data Binding for the card views.
-* [ ] Write Esspresso Test
+* [ ] Write Esspresso Tests to test aspects of the UI.

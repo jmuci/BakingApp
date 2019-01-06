@@ -43,6 +43,7 @@ public class StepDetailFragment extends DaggerFragment {
     public StepDetailFragment() {
     }
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -62,7 +63,6 @@ public class StepDetailFragment extends DaggerFragment {
                 }
             }
         }
-
         return view;
     }
 

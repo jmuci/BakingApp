@@ -28,6 +28,8 @@ public class StepDetailFragment extends DaggerFragment {
 
     public static final String ARG_STEP = "step_parcelable";
     private final static String TAG = StepDetailFragment.class.getName();
+    public static final String PLAYER_CURRENT_POS_KEY = "player_current_pos";
+    public static final String PLAYER_IS_READY_KEY = "player_is_ready";
 
     private TextView mStepDescription;
     private SimpleExoPlayerView mPlayerView;
@@ -54,7 +56,7 @@ public class StepDetailFragment extends DaggerFragment {
             if (step != null) {
                 mStepDescription.setText(step.getDescription());
                 if (!TextUtils.isEmpty(step.getVideoURL())) {
-                    initializePlayer(Uri.parse(step.getVideoURL()));
+                    initializePlayer(Uri.parse(step.getVideoURL()), savedInstanceState);
                 } else {
                     mPlayerView.setVisibility(View.GONE);
                 }
@@ -64,16 +66,35 @@ public class StepDetailFragment extends DaggerFragment {
         return view;
     }
 
-    private void initializePlayer(Uri mp4VideoUri) {
+    private void initializePlayer(Uri mp4VideoUri, Bundle savedInstanceState) {
         if (mPlayer != null && mp4VideoUri != null) {
             mPlayerView.setPlayer(mPlayer);
             // Produces DataSource instances through which media data is loaded.
             // This is the MediaSource representing the media to be played.
             MediaSource videoSource = new ExtractorMediaSource(mp4VideoUri, mDataSourceFactory, new DefaultExtractorsFactory(), null, null);
             // Prepare the player with the source.
-            mPlayer.prepare(videoSource);
-            mPlayer.setPlayWhenReady(true);
+            final boolean restoreStateFromBundle = resumePlaybackFromStateBundle(savedInstanceState) ;
+            mPlayer.prepare(videoSource, restoreStateFromBundle, false);
+            if (!restoreStateFromBundle)
+                mPlayer.setPlayWhenReady(true);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putLong(PLAYER_CURRENT_POS_KEY, Math.max(0, mPlayer.getCurrentPosition()));
+        outState.putBoolean(PLAYER_IS_READY_KEY, mPlayer.getPlayWhenReady());
+    }
+
+    private boolean resumePlaybackFromStateBundle(@Nullable Bundle inState) {
+        if (inState != null) {
+            mPlayer.setPlayWhenReady(inState.getBoolean(PLAYER_IS_READY_KEY));
+            mPlayer.seekTo(inState.getLong(PLAYER_CURRENT_POS_KEY));
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -84,8 +105,10 @@ public class StepDetailFragment extends DaggerFragment {
     @Override
     public void onStop() {
         super.onStop();
-        mPlayer.stop();
-        mPlayer.release();
-        mPlayer = null;
+        if (mPlayer != null) {
+            mPlayer.stop();
+            mPlayer.release();
+            mPlayer = null;
+        }
     }
 }

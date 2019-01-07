@@ -11,9 +11,10 @@ import android.view.View;
 import com.jmucientes.udacity.bakingapp.home.HomeFragment;
 import com.jmucientes.udacity.bakingapp.stepdetail.StepDetailFragment;
 
+import java.util.Objects;
+
 import javax.inject.Inject;
 
-import dagger.Lazy;
 import dagger.android.support.DaggerAppCompatActivity;
 
 public class MainActivity extends DaggerAppCompatActivity implements FragmentManager.OnBackStackChangedListener {
@@ -21,7 +22,7 @@ public class MainActivity extends DaggerAppCompatActivity implements FragmentMan
     private static final String TAG = MainActivity.class.getName();
 
     @Inject
-    Lazy<HomeFragment> mHomeFragmentProvider;
+    HomeFragment mHomeFragment;
     private String mToolbarTitle;
 
     @Override
@@ -32,7 +33,7 @@ public class MainActivity extends DaggerAppCompatActivity implements FragmentMan
         if (savedInstanceState == null) {
             HomeFragment homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentById(R.id.container);
             if (homeFragment == null) {
-                homeFragment = mHomeFragmentProvider.get();
+                homeFragment = mHomeFragment;
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, homeFragment)
                         .commitNow();
             }
@@ -58,7 +59,7 @@ public class MainActivity extends DaggerAppCompatActivity implements FragmentMan
                     // Hide the nav bar and status bar
                     View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                             | View.SYSTEM_UI_FLAG_FULLSCREEN);
-            getSupportActionBar().hide();
+            Objects.requireNonNull(getSupportActionBar()).hide();
         }
     }
 

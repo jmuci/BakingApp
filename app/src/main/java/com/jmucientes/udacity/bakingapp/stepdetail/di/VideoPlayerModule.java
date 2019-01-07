@@ -1,4 +1,4 @@
-package com.jmucientes.udacity.bakingapp.di;
+package com.jmucientes.udacity.bakingapp.stepdetail.di;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;

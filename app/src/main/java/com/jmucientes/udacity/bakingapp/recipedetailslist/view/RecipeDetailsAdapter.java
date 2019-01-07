@@ -1,6 +1,7 @@
 package com.jmucientes.udacity.bakingapp.recipedetailslist.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -10,9 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.jmucientes.udacity.bakingapp.MainActivity;
 import com.jmucientes.udacity.bakingapp.R;
 import com.jmucientes.udacity.bakingapp.model.Step;
+import com.jmucientes.udacity.bakingapp.stepdetail.StepDetailActivity;
 import com.jmucientes.udacity.bakingapp.stepdetail.StepDetailFragment;
 
 import java.lang.ref.WeakReference;
@@ -20,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import static com.jmucientes.udacity.bakingapp.stepdetail.StepDetailFragment.ARG_BUNDLE_KEY;
 
 public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsAdapter.DetailViewHolder> {
 
@@ -65,12 +68,19 @@ public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsAdap
     }
 
     private void navigateToStepDetails(Step step) {
+        Intent seeDetailsIntent = new Intent(mContextWeakReference.get(), StepDetailActivity.class);
+        Bundle args = new Bundle();
+        args.putParcelable(StepDetailFragment.ARG_STEP_KEY, step);
+        //args.putParcelable(StepDetailFragment.STEPS_LIST_KEY, mStepList);
+        seeDetailsIntent.putExtra(ARG_BUNDLE_KEY, args);
+        mContextWeakReference.get().startActivity(seeDetailsIntent);
+/*
         StepDetailFragment stepDetailFragment = new StepDetailFragment();
         Bundle args = new Bundle();
-        args.putParcelable(StepDetailFragment.ARG_STEP, step);
+        args.putParcelable(ARG_BUNDLE_KEY, step);
         stepDetailFragment.setArguments(args);
 
-        ((MainActivity) mContextWeakReference.get()).navigateToFragment(stepDetailFragment);
+        ((MainActivity) mContextWeakReference.get()).navigateToFragment(stepDetailFragment);*/
     }
 
     @Override

@@ -26,7 +26,9 @@ import dagger.android.support.DaggerFragment;
 
 public class StepDetailFragment extends DaggerFragment {
 
-    public static final String ARG_STEP = "step_parcelable";
+    public static final String ARG_STEP_KEY = "step_parcelable_key";
+    public static final String ARG_BUNDLE_KEY = "step_parcelable";
+    public static final String STEPS_LIST_KEY = "steps_list_bundle";
     private final static String TAG = StepDetailFragment.class.getName();
     public static final String PLAYER_CURRENT_POS_KEY = "player_current_pos";
     public static final String PLAYER_IS_READY_KEY = "player_is_ready";
@@ -43,7 +45,6 @@ public class StepDetailFragment extends DaggerFragment {
     public StepDetailFragment() {
     }
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -53,7 +54,7 @@ public class StepDetailFragment extends DaggerFragment {
 
         Bundle extras = getArguments();
         if (extras != null) {
-            Step step = extras.getParcelable(ARG_STEP);
+            Step step = extras.getParcelable(ARG_STEP_KEY);
             if (step != null) {
                 mStepDescription.setText(step.getDescription());
                 if (!TextUtils.isEmpty(step.getVideoURL())) {
@@ -74,7 +75,7 @@ public class StepDetailFragment extends DaggerFragment {
             MediaSource videoSource = new ExtractorMediaSource(mp4VideoUri, mDataSourceFactory, new DefaultExtractorsFactory(), null, null);
             // Prepare the player with the source.
             final boolean restoreStateFromBundle = resumePlaybackFromStateBundle(savedInstanceState) ;
-            mPlayer.prepare(videoSource, restoreStateFromBundle, false);
+            mPlayer.prepare(videoSource, !restoreStateFromBundle, false);
             if (!restoreStateFromBundle)
                 mPlayer.setPlayWhenReady(true);
         }

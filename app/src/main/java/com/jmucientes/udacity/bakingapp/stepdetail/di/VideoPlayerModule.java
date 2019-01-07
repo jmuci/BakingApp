@@ -9,8 +9,8 @@ import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
-import com.jmucientes.udacity.bakingapp.MainActivity;
 import com.jmucientes.udacity.bakingapp.di.scopes.FragmentScoped;
+import com.jmucientes.udacity.bakingapp.stepdetail.StepDetailActivity;
 
 import dagger.Module;
 import dagger.Provides;
@@ -20,15 +20,15 @@ public class VideoPlayerModule {
 
     @FragmentScoped
     @Provides
-    static SimpleExoPlayer simpleExoPlayerProvider(MainActivity mainActivity, TrackSelector trackSelector, LoadControl loadControl) {
-        return  ExoPlayerFactory.newSimpleInstance(mainActivity, trackSelector, loadControl);
+    static SimpleExoPlayer simpleExoPlayerProvider(StepDetailActivity stepDetailActivity, TrackSelector trackSelector, LoadControl loadControl) {
+        return  ExoPlayerFactory.newSimpleInstance(stepDetailActivity, trackSelector, loadControl);
     }
 
     @FragmentScoped
     @Provides
-    static DataSource.Factory dataSourceFactoryProvider(MainActivity mainActivity) {
-        return new DefaultDataSourceFactory(mainActivity,
-                Util.getUserAgent(mainActivity, "BakingApp"));
+    static DataSource.Factory dataSourceFactoryProvider(StepDetailActivity stepDetailActivity) {
+        return new DefaultDataSourceFactory(stepDetailActivity,
+                Util.getUserAgent(stepDetailActivity, "BakingApp"));
     }
 
     @FragmentScoped

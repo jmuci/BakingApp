@@ -1,15 +1,12 @@
 package com.jmucientes.udacity.bakingapp;
 
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.view.View;
 
 import com.jmucientes.udacity.bakingapp.home.HomeFragment;
-import com.jmucientes.udacity.bakingapp.stepdetail.StepDetailFragment;
 
 import java.util.Objects;
 
@@ -21,6 +18,7 @@ public class MainActivity extends DaggerAppCompatActivity implements FragmentMan
 
     private static final String TAG = MainActivity.class.getName();
 
+    //TODO Remove Lazy Injection
     @Inject
     HomeFragment mHomeFragment;
     private String mToolbarTitle;
@@ -30,6 +28,7 @@ public class MainActivity extends DaggerAppCompatActivity implements FragmentMan
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.main_activity);
+        // Happens only the first time
         if (savedInstanceState == null) {
             HomeFragment homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentById(R.id.container);
             if (homeFragment == null) {
@@ -39,42 +38,19 @@ public class MainActivity extends DaggerAppCompatActivity implements FragmentMan
             }
         }
 
-        // If the Video Fragment is Active and we are in landscape, make fullscreen.
-        if (isVideoFragmentActive()) {
-            setFullScreenModeIfLandscapeOrientation();
-        }
-
         //Listen for changes in the back stack
         getSupportFragmentManager().addOnBackStackChangedListener(this);
-        //Handle when activity is recreated like on orientation Change
-        shouldDisplayHomeUp();
-    }
-
-    private void setFullScreenModeIfLandscapeOrientation() {
-        int orientation = this.getResources().getConfiguration().orientation;
-        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            // code for portrait mode
-            View decorView = getWindow().getDecorView();
-            decorView.setSystemUiVisibility(
-                    // Hide the nav bar and status bar
-                    View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_FULLSCREEN);
-            Objects.requireNonNull(getSupportActionBar()).hide();
-        }
-    }
-
-    private boolean isVideoFragmentActive() {
-        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.container);
-        return currentFragment instanceof StepDetailFragment;
+        //Enable up navigation
+        displayHomeUpIfEntriesInBackStack();
     }
 
     @Override
     public void onBackStackChanged() {
-        shouldDisplayHomeUp();
+        displayHomeUpIfEntriesInBackStack();
     }
 
-    public void shouldDisplayHomeUp() {
-        //Enable Up button only  if there are entries in the back stack
+    private void displayHomeUpIfEntriesInBackStack() {
+        //Enable Up button only if there are entries in the back stack
         boolean canGoBack = getSupportFragmentManager().getBackStackEntryCount() > 0;
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(canGoBack);

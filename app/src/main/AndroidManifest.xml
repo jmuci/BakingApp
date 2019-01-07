@@ -34,6 +34,9 @@
 
         <service android:name=".widget.IngredientsWidgetService"
         android:permission="android.permission.BIND_REMOTEVIEWS" />
+        <activity android:name=".stepdetail.StepDetailActivity"
+            android:parentActivityName=".MainActivity">
+        </activity>
     </application>
 
 </manifest>

@@ -33,6 +33,7 @@ One of the skills you will demonstrate in this project is how to handle unexpect
 * [X] Restore playback state on rotation and add full screen.
 * [X] Make ingredients card clickable and show ingredients list in a fragment
 * [ ] Use ViewPager to navigate across steps
+* [X] Use ViewPager to navigate across steps
 * [ ] Implement Adaptative UI for Tablets.
 * [X] Application has a companion homescreen widget. 
 * [X] Widget displays ingredient list for desired recipe.

@@ -3,6 +3,9 @@ package com.jmucientes.udacity.bakingapp.widget;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.jmucientes.udacity.bakingapp.R;
@@ -18,7 +21,15 @@ public class IngredientsWidgetProvider extends AppWidgetProvider {
         CharSequence widgetText = context.getString(R.string.appwidget_text);
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.ingredients_widget_provider);
-        views.setTextViewText(R.id.appwidget_text, widgetText);
+        views.setEmptyView(R.id.widget_ingredients_list, R.id.empty_view);
+
+        Log.d("Widget::Provider", "Connecting to Remote views");
+        // Set up the intent that starts the StackViewService, which will
+        // provide the views for this collection.
+        Intent ingredientsIntent = new Intent(context, IngredientsWidgetService.class);
+        // Add the app widget ID to the intent extras.
+        // This is how you populate the data.
+        views.setRemoteAdapter(R.id.widget_ingredients_list, ingredientsIntent);
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);

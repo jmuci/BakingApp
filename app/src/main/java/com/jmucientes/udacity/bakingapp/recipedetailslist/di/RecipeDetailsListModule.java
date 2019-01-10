@@ -1,6 +1,5 @@
 package com.jmucientes.udacity.bakingapp.recipedetailslist.di;
 
-import com.jmucientes.udacity.bakingapp.di.scopes.FragmentScoped;
 import com.jmucientes.udacity.bakingapp.recipedetailslist.IngredientsListFragment;
 import com.jmucientes.udacity.bakingapp.recipedetailslist.RecipeDetailListFragment;
 
@@ -10,11 +9,9 @@ import dagger.android.ContributesAndroidInjector;
 @Module
 public abstract class RecipeDetailsListModule {
 
-    @FragmentScoped
     @ContributesAndroidInjector
     abstract RecipeDetailListFragment recipeDetailListFragment();
 
-    @FragmentScoped
     @ContributesAndroidInjector
     abstract IngredientsListFragment mIngredientsListFragment();
 }

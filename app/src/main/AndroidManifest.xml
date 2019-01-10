@@ -22,6 +22,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".stepdetail.StepDetailActivity"
+            android:parentActivityName=".MainActivity">
+        </activity>
         <receiver android:name=".widget.IngredientsWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -34,9 +37,6 @@
 
         <service android:name=".widget.IngredientsWidgetService"
         android:permission="android.permission.BIND_REMOTEVIEWS" />
-        <activity android:name=".stepdetail.StepDetailActivity"
-            android:parentActivityName=".MainActivity">
-        </activity>
     </application>
 
 </manifest>

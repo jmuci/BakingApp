@@ -4,18 +4,22 @@
     android:background="#09C"
     android:padding="@dimen/widget_margin">
 
+    <ListView
+        android:id="@+id/widget_ingredients_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="4dp">
+    </ListView>
+
     <TextView
-        android:id="@+id/appwidget_text"
+        android:id="@+id/empty_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_margin="8dp"
-        android:background="#09C"
-        android:contentDescription="@string/appwidget_text"
-        android:text="@string/appwidget_text"
-        android:textColor="#ffffff"
-        android:textSize="24sp"
-        android:textStyle="bold|italic" />
+        android:layout_gravity="center|top"
+        android:layout_marginTop="0dp"
+        android:gravity="center"
+        android:text="@string/empty_widget_text" />
 
 </RelativeLayout>

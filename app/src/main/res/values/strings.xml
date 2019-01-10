@@ -7,4 +7,6 @@
     <string name="completed_recipe_result">Completed recipe result</string>
     <string name="servings_label">Servings %s.</string>
     <string name="number_of_steps_lable">Number of steps: %s</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>

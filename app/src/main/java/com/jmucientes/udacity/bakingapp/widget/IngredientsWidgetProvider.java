@@ -1,9 +1,11 @@
-package com.jmucientes.udacity.bakingapp;
+package com.jmucientes.udacity.bakingapp.widget;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.widget.RemoteViews;
+
+import com.jmucientes.udacity.bakingapp.R;
 
 /**
  * Implementation of App Widget functionality.

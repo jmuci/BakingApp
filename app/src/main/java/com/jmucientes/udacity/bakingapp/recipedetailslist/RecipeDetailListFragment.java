@@ -48,7 +48,7 @@ public class RecipeDetailListFragment extends DaggerFragment {
         if (extras != null) {
             mCurrentRecipe = extras.getParcelable(ARG_RECIPE);
             if (mCurrentRecipe != null) {
-                mRecipeDetailsAdapter.updateDataSet(mCurrentRecipe.getSteps());
+                mRecipeDetailsAdapter.updateDataSet(mCurrentRecipe);
             }
         }
 

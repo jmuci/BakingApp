@@ -9,7 +9,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
@@ -17,6 +19,7 @@ import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
+import com.jmucientes.udacity.bakingapp.MainActivity;
 import com.jmucientes.udacity.bakingapp.R;
 import com.jmucientes.udacity.bakingapp.model.Recipe;
 import com.jmucientes.udacity.bakingapp.model.Step;
@@ -42,6 +45,10 @@ public class StepDetailFragment extends DaggerFragment {
     SimpleExoPlayer mPlayer;
     @Inject
     DataSource.Factory mDataSourceFactory;
+    private ImageButton mPreviousStepButton;
+    private ImageButton mNextStepButton;
+    private Recipe mRecipe;
+    private int mIndex;
 
     @Inject
     public StepDetailFragment() {
@@ -54,13 +61,15 @@ public class StepDetailFragment extends DaggerFragment {
         View view = inflater.inflate(R.layout.step_detail_fragment, container, false);
         mStepDescription = view.findViewById(R.id.step_description);
         mPlayerView = view.findViewById(R.id.player_view);
+        mPreviousStepButton = view.findViewById(R.id.previousStepButton);
+        mNextStepButton = view.findViewById(R.id.nextStepButton);
 
         Bundle extras = getArguments();
         if (extras != null) {
-            Recipe recipe = extras.getParcelable(ARG_RECIPE);
-            int index = extras.getInt(ARG_STEP_INDEX, -1);
-            if (recipe != null && index != -1) {
-                Step step = recipe.getSteps().get(index);
+            mRecipe = extras.getParcelable(ARG_RECIPE);
+            mIndex = extras.getInt(ARG_STEP_INDEX, -1);
+            if (mRecipe != null && mIndex != -1) {
+                Step step = mRecipe.getSteps().get(mIndex);
                 mStepDescription.setText(step.getDescription());
                 if (!TextUtils.isEmpty(step.getVideoURL())) {
                     initializePlayer(Uri.parse(step.getVideoURL()), savedInstanceState);
@@ -71,8 +80,39 @@ public class StepDetailFragment extends DaggerFragment {
                 Log.e(TAG, "Got invalid recipe - index combo.");
             }
         }
+
+        mPreviousStepButton.setOnClickListener(v -> previousStepClicked());
+        mNextStepButton.setOnClickListener(v -> nextStepClicked());
         return view;
     }
+
+    private void previousStepClicked() {
+        if (mIndex > 0) {
+            navigateToStep(mIndex - 1);
+        } else {
+            Toast.makeText(getActivity(), "There are no previoys steps", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void nextStepClicked() {
+        if (mIndex < mRecipe.getSteps().size() - 1) {
+            navigateToStep(mIndex + 1);
+        } else {
+            Toast.makeText(getActivity(), "There are no next steps", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    private void navigateToStep(int stepNumber) {
+        StepDetailFragment stepDetailFragment = new StepDetailFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(StepDetailFragment.ARG_RECIPE, mRecipe);
+        args.putInt(StepDetailFragment.ARG_STEP_INDEX, stepNumber);
+        stepDetailFragment.setArguments(args);
+
+        ((MainActivity) getActivity()).navigateToFragment(stepDetailFragment);
+    }
+
 
     private void initializePlayer(Uri mp4VideoUri, Bundle savedInstanceState) {
         if (mPlayer != null && mp4VideoUri != null) {

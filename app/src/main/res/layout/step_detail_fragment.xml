@@ -34,7 +34,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/previousStepButton"
         android:layout_width="120dp"
         android:layout_height="50dp"
         android:layout_marginStart="24dp"
@@ -42,13 +42,13 @@
         android:background="@color/colorPrimaryDark"
         android:elevation="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton2"
+        app:layout_constraintEnd_toStartOf="@+id/nextStepButton"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/ic_keyboard_arrow_left_64dp"
         android:contentDescription="@string/previous_step_cont_desc" />
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/nextStepButton"
         android:layout_width="120dp"
         android:layout_height="50dp"
         android:layout_marginStart="104dp"
@@ -57,7 +57,7 @@
         android:elevation="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageButton"
+        app:layout_constraintStart_toEndOf="@+id/previousStepButton"
         app:srcCompat="@drawable/ic_arrow_right_64dp"
         android:contentDescription="@string/next_step_cont_desc" />
 

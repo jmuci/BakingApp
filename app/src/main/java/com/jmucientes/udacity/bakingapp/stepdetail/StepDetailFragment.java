@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.jmucientes.udacity.bakingapp.R;
+import com.jmucientes.udacity.bakingapp.model.Recipe;
 import com.jmucientes.udacity.bakingapp.model.Step;
 
 import javax.inject.Inject;
@@ -27,6 +29,8 @@ import dagger.android.support.DaggerFragment;
 public class StepDetailFragment extends DaggerFragment {
 
     public static final String ARG_STEP = "step_parcelable";
+    public static final String ARG_RECIPE = "recipe_parcelable";
+    public static final String ARG_STEP_INDEX = "step_index";
     private final static String TAG = StepDetailFragment.class.getName();
     public static final String PLAYER_CURRENT_POS_KEY = "player_current_pos";
     public static final String PLAYER_IS_READY_KEY = "player_is_ready";
@@ -53,14 +57,18 @@ public class StepDetailFragment extends DaggerFragment {
 
         Bundle extras = getArguments();
         if (extras != null) {
-            Step step = extras.getParcelable(ARG_STEP);
-            if (step != null) {
+            Recipe recipe = extras.getParcelable(ARG_RECIPE);
+            int index = extras.getInt(ARG_STEP_INDEX, -1);
+            if (recipe != null && index != -1) {
+                Step step = recipe.getSteps().get(index);
                 mStepDescription.setText(step.getDescription());
                 if (!TextUtils.isEmpty(step.getVideoURL())) {
                     initializePlayer(Uri.parse(step.getVideoURL()), savedInstanceState);
                 } else {
                     mPlayerView.setVisibility(View.GONE);
                 }
+            } else {
+                Log.e(TAG, "Got invalid recipe - index combo.");
             }
         }
         return view;
@@ -83,9 +91,12 @@ public class StepDetailFragment extends DaggerFragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-
-        outState.putLong(PLAYER_CURRENT_POS_KEY, Math.max(0, mPlayer.getCurrentPosition()));
-        outState.putBoolean(PLAYER_IS_READY_KEY, mPlayer.getPlayWhenReady());
+        if (mPlayer != null) {
+            outState.putLong(PLAYER_CURRENT_POS_KEY, Math.max(0, mPlayer.getCurrentPosition()));
+            outState.putBoolean(PLAYER_IS_READY_KEY, mPlayer.getPlayWhenReady());
+        } else {
+            Log.e(TAG, "Could not save state, mPlayer was null!!!");
+        }
     }
 
     private boolean resumePlaybackFromStateBundle(@Nullable Bundle inState) {

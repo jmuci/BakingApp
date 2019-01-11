@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.jmucientes.udacity.bakingapp.MainActivity;
 import com.jmucientes.udacity.bakingapp.R;
+import com.jmucientes.udacity.bakingapp.model.Recipe;
 import com.jmucientes.udacity.bakingapp.model.Step;
 import com.jmucientes.udacity.bakingapp.stepdetail.StepDetailFragment;
 
@@ -23,12 +24,11 @@ import javax.inject.Inject;
 
 public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsAdapter.DetailViewHolder> {
 
-    private List<Step> mStepList;
     private WeakReference<Context> mContextWeakReference;
+    private Recipe mRecipe;
 
     @Inject
     public RecipeDetailsAdapter() {
-        mStepList = new ArrayList<>();
     }
 
     public class DetailViewHolder extends RecyclerView.ViewHolder {
@@ -54,20 +54,16 @@ public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsAdap
     @Override
     public void onBindViewHolder(@NonNull DetailViewHolder detailViewHolder, int position) {
         detailViewHolder.mStepNumber.setText(String.valueOf(position + 1));
-        detailViewHolder.mDetailsShortDescriptionTV.setText(mStepList.get(position).getShortDescription());
+        detailViewHolder.mDetailsShortDescriptionTV.setText(mRecipe.getSteps().get(position).getShortDescription());
 
-        detailViewHolder.mDetailsShortDescriptionTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                navigateToStepDetails(mStepList.get(position));
-            }
-        });
+        detailViewHolder.mDetailsShortDescriptionTV.setOnClickListener(view -> navigateToStepDetails(mRecipe, position));
     }
 
-    private void navigateToStepDetails(Step step) {
+    private void navigateToStepDetails(Recipe recipe, int index) {
         StepDetailFragment stepDetailFragment = new StepDetailFragment();
         Bundle args = new Bundle();
-        args.putParcelable(StepDetailFragment.ARG_STEP, step);
+        args.putParcelable(StepDetailFragment.ARG_RECIPE, recipe);
+        args.putInt(StepDetailFragment.ARG_STEP_INDEX, index);
         stepDetailFragment.setArguments(args);
 
         ((MainActivity) mContextWeakReference.get()).navigateToFragment(stepDetailFragment);
@@ -75,11 +71,15 @@ public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsAdap
 
     @Override
     public int getItemCount() {
-        return mStepList.size();
+        if (mRecipe != null) {
+            return mRecipe.getSteps().size();
+        } else {
+            return 0;
+        }
     }
 
-    public void updateDataSet(List<Step> steps) {
-        if (steps != null)
-            mStepList = steps;
+    public void updateDataSet(Recipe recipe) {
+        if (recipe != null)
+            mRecipe = recipe;
     }
 }

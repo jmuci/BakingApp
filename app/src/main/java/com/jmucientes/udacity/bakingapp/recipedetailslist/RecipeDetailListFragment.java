@@ -1,9 +1,11 @@
 package com.jmucientes.udacity.bakingapp.recipedetailslist;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,6 +17,7 @@ import com.jmucientes.udacity.bakingapp.R;
 import com.jmucientes.udacity.bakingapp.SharedPrefsUtil;
 import com.jmucientes.udacity.bakingapp.model.Recipe;
 import com.jmucientes.udacity.bakingapp.recipedetailslist.view.RecipeDetailsAdapter;
+import com.jmucientes.udacity.bakingapp.stepdetail.StepDetailFragment;
 
 import javax.inject.Inject;
 
@@ -45,6 +48,7 @@ public class RecipeDetailListFragment extends DaggerFragment {
         mDetailsRecyclerView.setLayoutManager(layoutManager);
         mDetailsRecyclerView.setAdapter(mRecipeDetailsAdapter);
 
+
         Bundle extras = getArguments();
         if (extras != null) {
             mCurrentRecipe = extras.getParcelable(ARG_RECIPE);
@@ -52,6 +56,12 @@ public class RecipeDetailListFragment extends DaggerFragment {
                 mRecipeDetailsAdapter.updateDataSet(mCurrentRecipe);
                 SharedPrefsUtil.saveRecipteToSharedPreferences(getActivity(), mCurrentRecipe);
             }
+        }
+
+        Configuration config = getResources().getConfiguration();
+        if (config.smallestScreenWidthDp >= 600) {
+            // use a grid layout manager
+            ((MainActivity) getActivity()).loadSecondFragmentOnScreen(mCurrentRecipe, 0);
         }
 
         mIngredientsCard.setOnClickListener(v -> navigateToIngredientsFragment());

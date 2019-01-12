@@ -2,13 +2,16 @@ package com.jmucientes.udacity.bakingapp;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import com.jmucientes.udacity.bakingapp.home.HomeFragment;
+import com.jmucientes.udacity.bakingapp.model.Recipe;
 import com.jmucientes.udacity.bakingapp.stepdetail.StepDetailFragment;
 
 import java.util.Objects;
@@ -24,12 +27,15 @@ public class MainActivity extends DaggerAppCompatActivity implements FragmentMan
     @Inject
     HomeFragment mHomeFragment;
     private String mToolbarTitle;
+    private FrameLayout mFragmentContainer2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.main_activity);
+        // Will only exist for table (sw-600)
+        mFragmentContainer2 = findViewById(R.id.container_2);
         if (savedInstanceState == null) {
             HomeFragment homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentById(R.id.container);
             if (homeFragment == null) {
@@ -98,7 +104,7 @@ public class MainActivity extends DaggerAppCompatActivity implements FragmentMan
         navigateToFragment(fragment);
     }
 
-    public void navigateToFragment(Fragment fragment) {
+    public void navigateToFragment(@NonNull Fragment fragment) {
         Log.d(TAG, "Navigating to fragment: " + fragment.toString());
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -106,4 +112,28 @@ public class MainActivity extends DaggerAppCompatActivity implements FragmentMan
         fragmentTransaction.addToBackStack(fragment.toString());
         fragmentTransaction.commit();
     }
+
+    public void loadSecondFragmentOnScreen(Recipe recipe, int index) {
+        if (mFragmentContainer2 != null) {
+            StepDetailFragment stepDetailFragment = new StepDetailFragment();
+            Bundle args = new Bundle();
+            args.putParcelable(StepDetailFragment.ARG_RECIPE, recipe);
+            args.putInt(StepDetailFragment.ARG_STEP_INDEX, index);
+            stepDetailFragment.setArguments(args);
+
+            loadFragmentBySide(stepDetailFragment);
+        } else {
+            Log.e(TAG, "Can only load fragment side by side on tablet.");
+        }
+    }
+
+    private void loadFragmentBySide(@NonNull StepDetailFragment stepDetailFragment) {
+        mFragmentContainer2.setVisibility(View.VISIBLE);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container_2, stepDetailFragment, stepDetailFragment.toString());
+        fragmentTransaction.addToBackStack(stepDetailFragment.toString());
+        fragmentTransaction.commit();
+    }
+
 }

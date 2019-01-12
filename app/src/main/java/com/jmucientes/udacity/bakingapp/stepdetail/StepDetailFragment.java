@@ -1,5 +1,6 @@
 package com.jmucientes.udacity.bakingapp.stepdetail;
 
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -88,7 +89,7 @@ public class StepDetailFragment extends DaggerFragment {
 
     private void previousStepClicked() {
         if (mIndex > 0) {
-            navigateToStep(mIndex - 1);
+            showStep(mIndex - 1);
         } else {
             Toast.makeText(getActivity(), "There are no previoys steps", Toast.LENGTH_SHORT).show();
         }
@@ -96,12 +97,21 @@ public class StepDetailFragment extends DaggerFragment {
 
     private void nextStepClicked() {
         if (mIndex < mRecipe.getSteps().size() - 1) {
-            navigateToStep(mIndex + 1);
+            showStep(mIndex + 1);
         } else {
             Toast.makeText(getActivity(), "There are no next steps", Toast.LENGTH_SHORT).show();
         }
     }
 
+    private void showStep(int stepNumber) {
+        Configuration config = this.getResources().getConfiguration();
+        if (config.smallestScreenWidthDp >= 600) {
+            // use a grid layout manager
+            ((MainActivity) getActivity()).loadSecondFragmentOnScreen(mRecipe, stepNumber);
+        } else {
+            navigateToStep(stepNumber);
+        }
+    }
 
     private void navigateToStep(int stepNumber) {
         StepDetailFragment stepDetailFragment = new StepDetailFragment();

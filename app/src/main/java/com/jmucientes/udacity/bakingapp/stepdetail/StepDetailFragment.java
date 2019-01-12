@@ -60,7 +60,7 @@ public class StepDetailFragment extends DaggerFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.step_detail_fragment, container, false);
         mStepDescription = view.findViewById(R.id.step_description);
-        mPlayerView = view.findViewById(R.id.player_view);
+        mPlayerView = view.findViewById(R.id.player_view_surface);
         mPreviousStepButton = view.findViewById(R.id.previousStepButton);
         mNextStepButton = view.findViewById(R.id.nextStepButton);
 

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.jmucientes.udacity.bakingapp.R;
+import com.jmucientes.udacity.bakingapp.util.SharedPrefsUtil;
 
 /**
  * Implementation of App Widget functionality.
@@ -22,6 +23,7 @@ public class IngredientsWidgetProvider extends AppWidgetProvider {
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.ingredients_widget_provider);
         views.setEmptyView(R.id.widget_ingredients_list, R.id.empty_view);
+        views.setTextViewText(R.id.recipe_name, SharedPrefsUtil.getRecipeName(context));
 
         Log.d("Widget::Provider", "Connecting to Remote views");
         // Set up the intent that starts the StackViewService, which will
@@ -30,7 +32,7 @@ public class IngredientsWidgetProvider extends AppWidgetProvider {
         // Add the app widget ID to the intent extras.
         // This is how you populate the data.
         views.setRemoteAdapter(R.id.widget_ingredients_list, ingredientsIntent);
-
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_ingredients_list);
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }

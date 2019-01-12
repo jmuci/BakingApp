@@ -9,5 +9,5 @@
     <string name="number_of_steps_lable">Steps: %s</string>
     <string name="appwidget_text">BakingApp</string>
     <string name="add_widget">Add widget</string>
-    <string name="empty_widget_text">Failed to fecht ingredients</string>
+    <string name="empty_widget_text">Ingredients will appear here shortly after you open the app.</string>
 </resources>

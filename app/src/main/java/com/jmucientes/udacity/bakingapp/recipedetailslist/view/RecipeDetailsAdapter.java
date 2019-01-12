@@ -1,6 +1,7 @@
 package com.jmucientes.udacity.bakingapp.recipedetailslist.view;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -60,13 +61,19 @@ public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsAdap
     }
 
     private void navigateToStepDetails(Recipe recipe, int index) {
-        StepDetailFragment stepDetailFragment = new StepDetailFragment();
-        Bundle args = new Bundle();
-        args.putParcelable(StepDetailFragment.ARG_RECIPE, recipe);
-        args.putInt(StepDetailFragment.ARG_STEP_INDEX, index);
-        stepDetailFragment.setArguments(args);
+        Configuration config = mContextWeakReference.get().getResources().getConfiguration();
+        if (config.smallestScreenWidthDp >= 600) {
+            // use a grid layout manager
+            ((MainActivity) mContextWeakReference.get()).loadSecondFragmentOnScreen(recipe, index);
+        } else {
+            StepDetailFragment stepDetailFragment = new StepDetailFragment();
+            Bundle args = new Bundle();
+            args.putParcelable(StepDetailFragment.ARG_RECIPE, recipe);
+            args.putInt(StepDetailFragment.ARG_STEP_INDEX, index);
+            stepDetailFragment.setArguments(args);
 
-        ((MainActivity) mContextWeakReference.get()).navigateToFragment(stepDetailFragment);
+            ((MainActivity) mContextWeakReference.get()).navigateToFragment(stepDetailFragment);
+        }
     }
 
     @Override

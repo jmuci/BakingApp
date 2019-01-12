@@ -1,5 +1,6 @@
 package com.jmucientes.udacity.bakingapp.recipedetailslist;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -45,6 +46,7 @@ public class RecipeDetailListFragment extends DaggerFragment {
         mDetailsRecyclerView.setLayoutManager(layoutManager);
         mDetailsRecyclerView.setAdapter(mRecipeDetailsAdapter);
 
+
         Bundle extras = getArguments();
         if (extras != null) {
             mCurrentRecipe = extras.getParcelable(ARG_RECIPE);
@@ -52,6 +54,12 @@ public class RecipeDetailListFragment extends DaggerFragment {
                 mRecipeDetailsAdapter.updateDataSet(mCurrentRecipe);
                 SharedPrefsUtil.saveRecipteToSharedPreferences(getActivity(), mCurrentRecipe);
             }
+        }
+
+        Configuration config = getResources().getConfiguration();
+        if (config.smallestScreenWidthDp >= 600) {
+            // use a grid layout manager
+            ((MainActivity) getActivity()).loadSecondFragmentOnScreen(mCurrentRecipe, 0);
         }
 
         mIngredientsCard.setOnClickListener(v -> navigateToIngredientsFragment());

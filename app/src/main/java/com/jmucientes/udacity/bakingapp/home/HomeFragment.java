@@ -2,10 +2,12 @@ package com.jmucientes.udacity.bakingapp.home;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -56,8 +58,16 @@ public class HomeFragment extends DaggerFragment {
         // in content do not change the layout size of the RecyclerView
         mRecipeCardsRV.setHasFixedSize(true);
 
-        // use a linear layout manager
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
+        LinearLayoutManager layoutManager;
+        Configuration config = getResources().getConfiguration();
+        if (config.smallestScreenWidthDp >= 600) {
+            // use a grid layout manager
+            layoutManager = new GridLayoutManager(this.getContext(), 3);
+        } else {
+            // use a linear layout manager
+            layoutManager = new LinearLayoutManager(this.getContext());
+        }
+
         mRecipeCardsRV.setLayoutManager(layoutManager);
 
         mRecipeCardsRV.setAdapter(mRecipeAdapter);

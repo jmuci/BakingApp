@@ -1,4 +1,4 @@
-package com.jmucientes.udacity.bakingapp;
+package com.jmucientes.udacity.bakingapp.util;
 
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
@@ -20,6 +20,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class SharedPrefsUtil {
     private static final String INGREDIENTS_PREFS_NAME = "recipe_ingredients";
     private static final String INGR_STRING_SET = "ingredients_string_set";
+    private static final String RECIPE_NAME = "recipe_name";
 
     public static Set<String> fetchSavedIngredientsSet(Context activity) {
         SharedPreferences recipeIngredients = activity.getSharedPreferences(INGREDIENTS_PREFS_NAME, MODE_PRIVATE);
@@ -37,10 +38,15 @@ public class SharedPrefsUtil {
         // Writing data to SharedPreferences
         SharedPreferences.Editor editor = recipeIngredients.edit();
         editor.putStringSet(INGR_STRING_SET, simplifiedIngredientsSet(currentRecipe.getIngredients()));
+        editor.putString(RECIPE_NAME, currentRecipe.getName());
         editor.apply();
         updateWidgetContent(activityContext);
     }
 
+    public static String getRecipeName(Context context) {
+        SharedPreferences recipeIngredients = context.getSharedPreferences(INGREDIENTS_PREFS_NAME, MODE_PRIVATE);
+        return recipeIngredients.getString(RECIPE_NAME, "No Recipe Loaded yet.");
+    }
     private static Set<String> simplifiedIngredientsSet(List<Ingredient> ingredients) {
         Set<String> simplifiedIngredientStringSet = new HashSet<>(ingredients.size());
         for (Ingredient ingredient: ingredients) {
@@ -48,6 +54,7 @@ public class SharedPrefsUtil {
         }
         return simplifiedIngredientStringSet;
     }
+
 
     private static void updateWidgetContent(Activity activityContext) {
         Intent intent = new Intent(activityContext, IngredientsWidgetProvider.class);

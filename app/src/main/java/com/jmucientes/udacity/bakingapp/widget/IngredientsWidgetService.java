@@ -7,9 +7,12 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.jmucientes.udacity.bakingapp.R;
+import com.jmucientes.udacity.bakingapp.SharedPrefsUtil;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 public class IngredientsWidgetService extends RemoteViewsService {
 
@@ -19,22 +22,17 @@ public class IngredientsWidgetService extends RemoteViewsService {
         return new IngredientsRemoteViewsFactory(this.getApplicationContext(), intent);
     }
 
-/*    private void handleActionUpdateIngredientWidgets() {
-        //TODO Get new ingredients from Shared Prefts
-
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
-        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this, IngredientsWidgetProvider.class));
-
-        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_ingredients_list);
-    }*/
-
     class IngredientsRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
         private final Context mContext;
-        private final List<String> mIngredientsList = Arrays.asList("chocolate", "butter", "suggar", "flour", "egg");
+        private List<String> mIngredientsList = Arrays.asList("chocolate", "butter", "suggar", "flour", "egg");
 
         public IngredientsRemoteViewsFactory(Context applicationContext, Intent intent) {
             mContext = applicationContext;
+            Set<String> ingredientsSet = SharedPrefsUtil.fetchSavedIngredientsSet(applicationContext);
+            if (ingredientsSet != null) {
+                mIngredientsList = new ArrayList<>(ingredientsSet);
+            }
         }
 
         @Override

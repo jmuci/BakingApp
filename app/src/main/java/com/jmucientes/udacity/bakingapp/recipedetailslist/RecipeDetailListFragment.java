@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.jmucientes.udacity.bakingapp.MainActivity;
 import com.jmucientes.udacity.bakingapp.R;
+import com.jmucientes.udacity.bakingapp.SharedPrefsUtil;
 import com.jmucientes.udacity.bakingapp.model.Recipe;
 import com.jmucientes.udacity.bakingapp.recipedetailslist.view.RecipeDetailsAdapter;
 
@@ -49,6 +50,7 @@ public class RecipeDetailListFragment extends DaggerFragment {
             mCurrentRecipe = extras.getParcelable(ARG_RECIPE);
             if (mCurrentRecipe != null) {
                 mRecipeDetailsAdapter.updateDataSet(mCurrentRecipe);
+                SharedPrefsUtil.saveRecipteToSharedPreferences(getActivity(), mCurrentRecipe);
             }
         }
 

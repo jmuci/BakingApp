@@ -1,6 +1,5 @@
 package com.jmucientes.udacity.bakingapp.recipedetailslist;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,25 +12,17 @@ import android.view.ViewGroup;
 
 import com.jmucientes.udacity.bakingapp.MainActivity;
 import com.jmucientes.udacity.bakingapp.R;
-import com.jmucientes.udacity.bakingapp.model.Ingredient;
+import com.jmucientes.udacity.bakingapp.SharedPrefsUtil;
 import com.jmucientes.udacity.bakingapp.model.Recipe;
 import com.jmucientes.udacity.bakingapp.recipedetailslist.view.RecipeDetailsAdapter;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 
-import static android.content.Context.MODE_PRIVATE;
-
 public class RecipeDetailListFragment extends DaggerFragment {
 
     public static final String ARG_RECIPE = "recipe_parcelable";
-    public static final String INGREDIENTS_PREFS_NAME = "recipe_ingredients";
-    public static final String INGR_STRING_SET = "ingredients_string_set";
     @Inject
     RecipeDetailsAdapter mRecipeDetailsAdapter;
 
@@ -59,29 +50,12 @@ public class RecipeDetailListFragment extends DaggerFragment {
             mCurrentRecipe = extras.getParcelable(ARG_RECIPE);
             if (mCurrentRecipe != null) {
                 mRecipeDetailsAdapter.updateDataSet(mCurrentRecipe);
-                saveRecipteToSharedPreferences(mCurrentRecipe);
+                SharedPrefsUtil.saveRecipteToSharedPreferences(getActivity(), mCurrentRecipe);
             }
         }
 
         mIngredientsCard.setOnClickListener(v -> navigateToIngredientsFragment());
         return view;
-    }
-
-    private void saveRecipteToSharedPreferences(Recipe currentRecipe) {
-        SharedPreferences recipeIngredients = getActivity().getSharedPreferences(INGREDIENTS_PREFS_NAME, MODE_PRIVATE);
-
-        // Writing data to SharedPreferences
-        SharedPreferences.Editor editor = recipeIngredients.edit();
-        editor.putStringSet(INGR_STRING_SET, simplifieIngredientsdSet(currentRecipe.getIngredients()));
-        editor.apply();
-    }
-
-    private Set<String> simplifieIngredientsdSet(List<Ingredient> ingredients) {
-        Set<String> simplifiedIngredientStringSet = new HashSet<>(ingredients.size());
-        for (Ingredient ingredient: ingredients) {
-            simplifiedIngredientStringSet.add(ingredient.getIngredient());
-        }
-        return simplifiedIngredientStringSet;
     }
 
     private void navigateToIngredientsFragment() {

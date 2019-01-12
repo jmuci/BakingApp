@@ -2,20 +2,17 @@ package com.jmucientes.udacity.bakingapp.widget;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.jmucientes.udacity.bakingapp.R;
-import com.jmucientes.udacity.bakingapp.recipedetailslist.RecipeDetailListFragment;
+import com.jmucientes.udacity.bakingapp.SharedPrefsUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-
-import static com.jmucientes.udacity.bakingapp.recipedetailslist.RecipeDetailListFragment.INGREDIENTS_PREFS_NAME;
 
 public class IngredientsWidgetService extends RemoteViewsService {
 
@@ -32,9 +29,7 @@ public class IngredientsWidgetService extends RemoteViewsService {
 
         public IngredientsRemoteViewsFactory(Context applicationContext, Intent intent) {
             mContext = applicationContext;
-            SharedPreferences recipeIngredients = getSharedPreferences(INGREDIENTS_PREFS_NAME, MODE_PRIVATE);
-
-            Set<String> ingredientsSet = recipeIngredients.getStringSet(RecipeDetailListFragment.INGR_STRING_SET, null);
+            Set<String> ingredientsSet = SharedPrefsUtil.fetchSavedIngredientsSet(applicationContext);
             if (ingredientsSet != null) {
                 mIngredientsList = new ArrayList<>(ingredientsSet);
             }

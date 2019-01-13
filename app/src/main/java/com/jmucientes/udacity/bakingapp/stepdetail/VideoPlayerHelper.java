@@ -13,6 +13,7 @@ import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 
+import javax.inject.Inject;
 import javax.inject.Provider;
 
 
@@ -32,6 +33,7 @@ public class VideoPlayerHelper {
     private boolean mPlayWhenReady = true;
     private int mCurrentWindow = 0;
 
+    @Inject
     public VideoPlayerHelper(Provider<SimpleExoPlayer> simpleExoPlayerProvider, DataSource.Factory dataSourceFactory) {
         mSimpleExoPlayerProvider = simpleExoPlayerProvider;
         mPlayer = mSimpleExoPlayerProvider.get();
@@ -39,18 +41,10 @@ public class VideoPlayerHelper {
 
     }
 
-    public VideoPlayerHelper(Provider<SimpleExoPlayer> simpleExoPlayerProvider,
-                             DataSource.Factory dataSourceFactory,
-                             long playbackPosition,
-                             boolean playWhenReady,
-                             int currentWindow) {
-        mSimpleExoPlayerProvider = simpleExoPlayerProvider;
-        mDataSourceFactory = dataSourceFactory;
-        mPlayer = mSimpleExoPlayerProvider.get();
+    public void restorePlaybackState(long playbackPosition, boolean playWhenReady, int currentWindow) {
         mPlaybackPosition = playbackPosition;
         mPlayWhenReady = playWhenReady;
         mCurrentWindow = currentWindow;
-
     }
 
     public void initializePlayer(@NonNull SimpleExoPlayerView playerView, @Nullable Uri mp4VideoUri) {

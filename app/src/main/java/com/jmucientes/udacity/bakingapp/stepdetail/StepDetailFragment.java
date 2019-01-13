@@ -45,12 +45,13 @@ public class StepDetailFragment extends DaggerFragment {
     private TextView mStepDescription;
     private SimpleExoPlayerView mPlayerView;
 
-    @Inject
+/*    @Inject
     Provider<SimpleExoPlayer> mPlayer;
     @Inject
-    DataSource.Factory mDataSourceFactory;
+    DataSource.Factory mDataSourceFactory;*/
 
-    private VideoPlayerHelper mVideoPlayerHelper;
+    @Inject
+    VideoPlayerHelper mVideoPlayerHelper;
 
     private ImageButton mPreviousStepButton;
     private ImageButton mNextStepButton;
@@ -80,9 +81,7 @@ public class StepDetailFragment extends DaggerFragment {
             boolean isPlayerReady = savedInstanceState.getBoolean(VideoPlayerHelper.PLAYER_IS_READY_KEY);
             int window = savedInstanceState.getInt(VideoPlayerHelper.PLAYER_WINDOW_KEY);
 
-            mVideoPlayerHelper = new VideoPlayerHelper(mPlayer, mDataSourceFactory, position, isPlayerReady, window);
-        } else {
-            mVideoPlayerHelper = new VideoPlayerHelper(mPlayer, mDataSourceFactory);
+            mVideoPlayerHelper.restorePlaybackState(position, isPlayerReady, window);
         }
 
         mPreviousStepButton.setOnClickListener(v -> previousStepClicked());

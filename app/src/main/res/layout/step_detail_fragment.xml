@@ -61,4 +61,18 @@
         app:srcCompat="@drawable/ic_arrow_right_64dp"
         android:contentDescription="@string/next_step_cont_desc" />
 
+    <ImageView
+        android:id="@+id/step_thumbnail_image"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:minHeight="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/step_description"
+        app:layout_constraintVertical_bias="0.13" />
+
 </android.support.constraint.ConstraintLayout>

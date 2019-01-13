@@ -7,19 +7,15 @@ import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.jmucientes.udacity.bakingapp.MainActivity;
 import com.jmucientes.udacity.bakingapp.R;
 import com.jmucientes.udacity.bakingapp.model.Recipe;
-import com.jmucientes.udacity.bakingapp.model.Step;
 import com.jmucientes.udacity.bakingapp.stepdetail.StepDetailFragment;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 

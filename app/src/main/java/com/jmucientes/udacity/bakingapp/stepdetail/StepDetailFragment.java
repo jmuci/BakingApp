@@ -15,12 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
-import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
-import com.google.android.exoplayer2.upstream.DataSource;
 import com.jmucientes.udacity.bakingapp.MainActivity;
 import com.jmucientes.udacity.bakingapp.R;
 import com.jmucientes.udacity.bakingapp.model.Recipe;
@@ -28,7 +23,6 @@ import com.jmucientes.udacity.bakingapp.model.Step;
 import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
-import javax.inject.Provider;
 
 import dagger.android.support.DaggerFragment;
 

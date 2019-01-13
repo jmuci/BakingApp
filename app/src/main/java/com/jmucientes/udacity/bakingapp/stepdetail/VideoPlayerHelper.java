@@ -41,13 +41,13 @@ public class VideoPlayerHelper {
 
     }
 
-    public void restorePlaybackState(long playbackPosition, boolean playWhenReady, int currentWindow) {
+    void restorePlaybackState(long playbackPosition, boolean playWhenReady, int currentWindow) {
         mPlaybackPosition = playbackPosition;
         mPlayWhenReady = playWhenReady;
         mCurrentWindow = currentWindow;
     }
 
-    public void initializePlayer(@NonNull SimpleExoPlayerView playerView, @Nullable Uri mp4VideoUri) {
+    void initializePlayer(@NonNull SimpleExoPlayerView playerView, @Nullable Uri mp4VideoUri) {
         if (mp4VideoUri != null) {
             if (mPlayer == null) {
                 // Get new instance of player if mPlayer is null
@@ -63,7 +63,7 @@ public class VideoPlayerHelper {
     }
 
 
-    public Bundle savePlayerStateIntoBundle(@NonNull Bundle outState) {
+    Bundle savePlayerStateIntoBundle(@NonNull Bundle outState) {
         if (mPlayer != null) {
             mPlaybackPosition = Math.max(0, mPlayer.getCurrentPosition());
             outState.putLong(PLAYER_CURRENT_POS_KEY, mPlaybackPosition);
@@ -79,7 +79,7 @@ public class VideoPlayerHelper {
         return outState;
     }
 
-    public void releasePlayer() {
+    void releasePlayer() {
         if (mPlayer != null) {
             mPlaybackPosition = mPlayer.getCurrentPosition();
             mCurrentWindow = mPlayer.getCurrentWindowIndex();

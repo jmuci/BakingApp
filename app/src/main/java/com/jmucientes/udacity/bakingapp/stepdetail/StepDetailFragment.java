@@ -22,6 +22,8 @@ import com.jmucientes.udacity.bakingapp.model.Recipe;
 import com.jmucientes.udacity.bakingapp.model.Step;
 import com.squareup.picasso.Picasso;
 
+import java.util.Objects;
+
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
@@ -29,26 +31,16 @@ import dagger.android.support.DaggerFragment;
 
 public class StepDetailFragment extends DaggerFragment {
 
-    public static final String ARG_STEP = "step_parcelable";
     public static final String ARG_RECIPE = "recipe_parcelable";
     public static final String ARG_STEP_INDEX = "step_index";
     private final static String TAG = StepDetailFragment.class.getName();
-    public static final String PLAYER_CURRENT_POS_KEY = "player_current_pos";
-    public static final String PLAYER_IS_READY_KEY = "player_is_ready";
 
     private TextView mStepDescription;
     private SimpleExoPlayerView mPlayerView;
 
-/*    @Inject
-    Provider<SimpleExoPlayer> mPlayer;
-    @Inject
-    DataSource.Factory mDataSourceFactory;*/
-
     @Inject
     VideoPlayerHelper mVideoPlayerHelper;
 
-    private ImageButton mPreviousStepButton;
-    private ImageButton mNextStepButton;
     private Recipe mRecipe;
     private int mIndex;
     private Step mStep;
@@ -64,8 +56,8 @@ public class StepDetailFragment extends DaggerFragment {
         View view = inflater.inflate(R.layout.step_detail_fragment, container, false);
         mStepDescription = view.findViewById(R.id.step_description);
         mPlayerView = view.findViewById(R.id.player_view_surface);
-        mPreviousStepButton = view.findViewById(R.id.previousStepButton);
-        mNextStepButton = view.findViewById(R.id.nextStepButton);
+        final ImageButton previousStepButton = view.findViewById(R.id.previousStepButton);
+        final ImageButton nextStepButton = view.findViewById(R.id.nextStepButton);
         mThumbnailImage = view.findViewById(R.id.step_thumbnail_image);
 
         bindStepDetailsFieldsAndViewsFromArgs(getArguments());
@@ -78,8 +70,8 @@ public class StepDetailFragment extends DaggerFragment {
             mVideoPlayerHelper.restorePlaybackState(position, isPlayerReady, window);
         }
 
-        mPreviousStepButton.setOnClickListener(v -> previousStepClicked());
-        mNextStepButton.setOnClickListener(v -> nextStepClicked());
+        previousStepButton.setOnClickListener(v -> previousStepClicked());
+        nextStepButton.setOnClickListener(v -> nextStepClicked());
         return view;
     }
 
@@ -135,7 +127,7 @@ public class StepDetailFragment extends DaggerFragment {
         Configuration config = this.getResources().getConfiguration();
         if (config.smallestScreenWidthDp >= 600) {
             // use a grid layout manager
-            ((MainActivity) getActivity()).loadSecondFragmentOnScreen(mRecipe, stepNumber);
+            ((MainActivity) Objects.requireNonNull(getActivity())).loadSecondFragmentOnScreen(mRecipe, stepNumber);
         } else {
             navigateToStep(stepNumber);
         }
@@ -164,6 +156,6 @@ public class StepDetailFragment extends DaggerFragment {
         args.putInt(StepDetailFragment.ARG_STEP_INDEX, stepNumber);
         stepDetailFragment.setArguments(args);
 
-        ((MainActivity) getActivity()).navigateToFragment(stepDetailFragment);
+        ((MainActivity) Objects.requireNonNull(getActivity())).navigateToFragment(stepDetailFragment);
     }
 }

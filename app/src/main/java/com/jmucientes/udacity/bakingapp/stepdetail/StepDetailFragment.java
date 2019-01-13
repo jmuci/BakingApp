@@ -28,6 +28,7 @@ import com.jmucientes.udacity.bakingapp.model.Step;
 import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 
 import dagger.android.support.DaggerFragment;
 
@@ -45,9 +46,11 @@ public class StepDetailFragment extends DaggerFragment {
     private SimpleExoPlayerView mPlayerView;
 
     @Inject
-    SimpleExoPlayer mPlayer;
+    Provider<SimpleExoPlayer> mPlayer;
     @Inject
     DataSource.Factory mDataSourceFactory;
+
+    private VideoPlayerHelper mVideoPlayerHelper;
 
     private ImageButton mPreviousStepButton;
     private ImageButton mNextStepButton;
@@ -55,12 +58,10 @@ public class StepDetailFragment extends DaggerFragment {
     private int mIndex;
     private Step mStep;
     private ImageView mThumbnailImage;
-    private boolean mResumePlayback;
 
     @Inject
     public StepDetailFragment() {
     }
-
 
     @Nullable
     @Override
@@ -74,10 +75,14 @@ public class StepDetailFragment extends DaggerFragment {
 
         bindStepDetailsFieldsAndViewsFromArgs(getArguments());
 
-        if (!TextUtils.isEmpty(mStep.getVideoURL())) {
-            mPlayerView.setPlayer(mPlayer);
+        if (savedInstanceState != null) {
+            long position = savedInstanceState.getLong(VideoPlayerHelper.PLAYER_CURRENT_POS_KEY);
+            boolean isPlayerReady = savedInstanceState.getBoolean(VideoPlayerHelper.PLAYER_IS_READY_KEY);
+            int window = savedInstanceState.getInt(VideoPlayerHelper.PLAYER_WINDOW_KEY);
+
+            mVideoPlayerHelper = new VideoPlayerHelper(mPlayer, mDataSourceFactory, position, isPlayerReady, window);
         } else {
-            mPlayerView.setVisibility(View.GONE);
+            mVideoPlayerHelper = new VideoPlayerHelper(mPlayer, mDataSourceFactory);
         }
 
         mPreviousStepButton.setOnClickListener(v -> previousStepClicked());
@@ -105,65 +110,32 @@ public class StepDetailFragment extends DaggerFragment {
         }
     }
 
-    private void initializePlayer(Uri mp4VideoUri) {
-        if (mPlayer != null && mp4VideoUri != null) {
-            // Produces DataSource instances through which media data is loaded.
-            // This is the MediaSource representing the media to be played.
-            MediaSource videoSource = new ExtractorMediaSource(mp4VideoUri, mDataSourceFactory, new DefaultExtractorsFactory(), null, null);
-            // Prepare the player with the source.
-            mPlayer.prepare(videoSource, mResumePlayback, false);
-            mPlayer.setPlayWhenReady(true);
-        }
-    }
-
-    private boolean resumePlaybackFromStateBundle(@Nullable Bundle inState) {
-        if (inState != null) {
-            mPlayer.setPlayWhenReady(inState.getBoolean(PLAYER_IS_READY_KEY));
-            mPlayer.seekTo(inState.getLong(PLAYER_CURRENT_POS_KEY));
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-        resumePlaybackFromStateBundle(savedInstanceState);
-    }
-
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (mPlayer != null) {
-            outState.putLong(PLAYER_CURRENT_POS_KEY, Math.max(0, mPlayer.getCurrentPosition()));
-            outState.putBoolean(PLAYER_IS_READY_KEY, mPlayer.getPlayWhenReady());
-        } else {
-            Log.e(TAG, "Could not save state, mPlayer was null!!!");
-        }
+        mVideoPlayerHelper.savePlayerStateIntoBundle(outState);
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
 
         if (!TextUtils.isEmpty(mStep.getVideoURL())) {
-            initializePlayer(Uri.parse(mStep.getVideoURL()));
+            mVideoPlayerHelper.initializePlayer(mPlayerView, Uri.parse(mStep.getVideoURL()));
+        } else {
+            mPlayerView.setVisibility(View.GONE);
         }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (mPlayer != null) {
-            mPlayer.stop();
-            mPlayer.release();
-        }
+        mVideoPlayerHelper.releasePlayer();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mPlayer = null;
     }
 
     private void showStep(int stepNumber) {

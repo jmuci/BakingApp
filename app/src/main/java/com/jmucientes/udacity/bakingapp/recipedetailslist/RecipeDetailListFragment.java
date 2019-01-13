@@ -13,9 +13,9 @@ import android.view.ViewGroup;
 
 import com.jmucientes.udacity.bakingapp.MainActivity;
 import com.jmucientes.udacity.bakingapp.R;
-import com.jmucientes.udacity.bakingapp.util.SharedPrefsUtil;
 import com.jmucientes.udacity.bakingapp.model.Recipe;
 import com.jmucientes.udacity.bakingapp.recipedetailslist.view.RecipeDetailsAdapter;
+import com.jmucientes.udacity.bakingapp.util.SharedPrefsUtil;
 
 import javax.inject.Inject;
 

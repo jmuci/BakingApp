@@ -15,17 +15,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
-import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
-import com.google.android.exoplayer2.upstream.DataSource;
 import com.jmucientes.udacity.bakingapp.MainActivity;
 import com.jmucientes.udacity.bakingapp.R;
 import com.jmucientes.udacity.bakingapp.model.Recipe;
 import com.jmucientes.udacity.bakingapp.model.Step;
 import com.squareup.picasso.Picasso;
+
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -34,33 +31,24 @@ import dagger.android.support.DaggerFragment;
 
 public class StepDetailFragment extends DaggerFragment {
 
-    public static final String ARG_STEP = "step_parcelable";
     public static final String ARG_RECIPE = "recipe_parcelable";
     public static final String ARG_STEP_INDEX = "step_index";
     private final static String TAG = StepDetailFragment.class.getName();
-    public static final String PLAYER_CURRENT_POS_KEY = "player_current_pos";
-    public static final String PLAYER_IS_READY_KEY = "player_is_ready";
 
     private TextView mStepDescription;
     private SimpleExoPlayerView mPlayerView;
 
     @Inject
-    SimpleExoPlayer mPlayer;
-    @Inject
-    DataSource.Factory mDataSourceFactory;
+    VideoPlayerHelper mVideoPlayerHelper;
 
-    private ImageButton mPreviousStepButton;
-    private ImageButton mNextStepButton;
     private Recipe mRecipe;
     private int mIndex;
     private Step mStep;
     private ImageView mThumbnailImage;
-    private boolean mResumePlayback;
 
     @Inject
     public StepDetailFragment() {
     }
-
 
     @Nullable
     @Override
@@ -68,20 +56,22 @@ public class StepDetailFragment extends DaggerFragment {
         View view = inflater.inflate(R.layout.step_detail_fragment, container, false);
         mStepDescription = view.findViewById(R.id.step_description);
         mPlayerView = view.findViewById(R.id.player_view_surface);
-        mPreviousStepButton = view.findViewById(R.id.previousStepButton);
-        mNextStepButton = view.findViewById(R.id.nextStepButton);
+        final ImageButton previousStepButton = view.findViewById(R.id.previousStepButton);
+        final ImageButton nextStepButton = view.findViewById(R.id.nextStepButton);
         mThumbnailImage = view.findViewById(R.id.step_thumbnail_image);
 
         bindStepDetailsFieldsAndViewsFromArgs(getArguments());
 
-        if (!TextUtils.isEmpty(mStep.getVideoURL())) {
-            mPlayerView.setPlayer(mPlayer);
-        } else {
-            mPlayerView.setVisibility(View.GONE);
+        if (savedInstanceState != null) {
+            long position = savedInstanceState.getLong(VideoPlayerHelper.PLAYER_CURRENT_POS_KEY);
+            boolean isPlayerReady = savedInstanceState.getBoolean(VideoPlayerHelper.PLAYER_IS_READY_KEY);
+            int window = savedInstanceState.getInt(VideoPlayerHelper.PLAYER_WINDOW_KEY);
+
+            mVideoPlayerHelper.restorePlaybackState(position, isPlayerReady, window);
         }
 
-        mPreviousStepButton.setOnClickListener(v -> previousStepClicked());
-        mNextStepButton.setOnClickListener(v -> nextStepClicked());
+        previousStepButton.setOnClickListener(v -> previousStepClicked());
+        nextStepButton.setOnClickListener(v -> nextStepClicked());
         return view;
     }
 
@@ -105,72 +95,39 @@ public class StepDetailFragment extends DaggerFragment {
         }
     }
 
-    private void initializePlayer(Uri mp4VideoUri) {
-        if (mPlayer != null && mp4VideoUri != null) {
-            // Produces DataSource instances through which media data is loaded.
-            // This is the MediaSource representing the media to be played.
-            MediaSource videoSource = new ExtractorMediaSource(mp4VideoUri, mDataSourceFactory, new DefaultExtractorsFactory(), null, null);
-            // Prepare the player with the source.
-            mPlayer.prepare(videoSource, mResumePlayback, false);
-            mPlayer.setPlayWhenReady(true);
-        }
-    }
-
-    private boolean resumePlaybackFromStateBundle(@Nullable Bundle inState) {
-        if (inState != null) {
-            mPlayer.setPlayWhenReady(inState.getBoolean(PLAYER_IS_READY_KEY));
-            mPlayer.seekTo(inState.getLong(PLAYER_CURRENT_POS_KEY));
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-        resumePlaybackFromStateBundle(savedInstanceState);
-    }
-
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (mPlayer != null) {
-            outState.putLong(PLAYER_CURRENT_POS_KEY, Math.max(0, mPlayer.getCurrentPosition()));
-            outState.putBoolean(PLAYER_IS_READY_KEY, mPlayer.getPlayWhenReady());
-        } else {
-            Log.e(TAG, "Could not save state, mPlayer was null!!!");
-        }
+        mVideoPlayerHelper.savePlayerStateIntoBundle(outState);
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
 
         if (!TextUtils.isEmpty(mStep.getVideoURL())) {
-            initializePlayer(Uri.parse(mStep.getVideoURL()));
+            mVideoPlayerHelper.initializePlayer(mPlayerView, Uri.parse(mStep.getVideoURL()));
+        } else {
+            mPlayerView.setVisibility(View.GONE);
         }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (mPlayer != null) {
-            mPlayer.stop();
-            mPlayer.release();
-        }
+        mVideoPlayerHelper.releasePlayer();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mPlayer = null;
     }
 
     private void showStep(int stepNumber) {
         Configuration config = this.getResources().getConfiguration();
         if (config.smallestScreenWidthDp >= 600) {
             // use a grid layout manager
-            ((MainActivity) getActivity()).loadSecondFragmentOnScreen(mRecipe, stepNumber);
+            ((MainActivity) Objects.requireNonNull(getActivity())).loadSecondFragmentOnScreen(mRecipe, stepNumber);
         } else {
             navigateToStep(stepNumber);
         }
@@ -199,6 +156,6 @@ public class StepDetailFragment extends DaggerFragment {
         args.putInt(StepDetailFragment.ARG_STEP_INDEX, stepNumber);
         stepDetailFragment.setArguments(args);
 
-        ((MainActivity) getActivity()).navigateToFragment(stepDetailFragment);
+        ((MainActivity) Objects.requireNonNull(getActivity())).navigateToFragment(stepDetailFragment);
     }
 }

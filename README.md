@@ -14,7 +14,64 @@ The JSON file contains the recipes' instructions, ingredients, videos and images
 
 One of the skills you will demonstrate in this project is how to handle unexpected input in your data -- professional developers often cannot expect polished JSON data when building an app.
 
-## TODOs
+
+## Screenshots - Portrait
+
+Here is how the app looks in portrait mode. 
+
+<p float="left">
+  <img src="demo_images/portrait_1.png" height="450">
+  <img src="demo_images/portrait_2.png" height="450"/>
+</p>
+
+## Screenshots - Tablet
+
+Here is how it looks in landscape mode on Tablet devide.
+
+<p float="left">
+  <img src="demo_images/tablet_land1.png" width="600"/>
+  <img src="demo_images/tablet_land2.png" width="600"/>
+</p>
+
+
+## Android Setup
+
+This project consists of a single module. Open the app in Android Studio, fire up and Emulator or Device, build the code and intall the APK.
+
+Or on the command line:
+```
+./gradlew installDebug
+``` 
+
+
+
+
+## Deployment
+
+Add additional notes about how to deploy this on a live system
+
+## Built With
+
+* [Dagger2](https://google.github.io/dagger/) - Used to build the dependency graph.
+* [Retrofit](https://square.github.io/retrofit/) - HTTP Client for Android applications.
+* [Exoplayer](https://github.com/google/ExoPlayer) - ExoPlayer is an application level media player for Android. 
+
+## Contributing
+
+This project is cloded for contributions and not maintained. It's for learning and showcase purposes only.
+
+
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+## Acknowledgments
+
+* [Udacity Android Nanodegree](https://eu.udacity.com/course/android-developer-nanodegree-by-google--nd801). 
+
+### TODOs
+Main epics coded while developing this app. 
 
 * [X] Set up Recycler view for MainFragment with Card Views <br>
 * [X] Setup Dagger 

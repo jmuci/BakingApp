@@ -36,5 +36,4 @@ One of the skills you will demonstrate in this project is how to handle unexpect
 * [X] Implement Adaptative UI for Tablets.
 * [X] Application has a companion homescreen widget. 
 * [X] Widget displays ingredient list for desired recipe.
-* [ ] Complete View Model implementation, including using of Data Binding for the card views.
-* [ ] Write Esspresso Tests to test aspects of the UI.
+* [X] Write Esspresso Tests to test aspects of the UI.

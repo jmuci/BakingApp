@@ -1,6 +1,9 @@
 package com.jmucientes.udacity.bakingapp;
 
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -10,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.jmucientes.udacity.bakingapp.data.network.ConnectionState;
 import com.jmucientes.udacity.bakingapp.home.HomeFragment;
 import com.jmucientes.udacity.bakingapp.model.Recipe;
 import com.jmucientes.udacity.bakingapp.stepdetail.StepDetailFragment;
@@ -28,8 +32,12 @@ public class MainActivity extends DaggerAppCompatActivity implements FragmentMan
 
     @Inject
     HomeFragment mHomeFragment;
+    @Inject
+    ConnectionState mConnectionState;
+
     private String mToolbarTitle;
     private FrameLayout mFragmentContainer2;
+    private IntentFilter mIntentFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +64,22 @@ public class MainActivity extends DaggerAppCompatActivity implements FragmentMan
         getSupportFragmentManager().addOnBackStackChangedListener(this);
         //Handle when activity is recreated like on orientation Change
         shouldDisplayHomeUp();
+
+        mIntentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        mIntentFilter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        registerReceiver(mConnectionState, mIntentFilter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(mConnectionState);
     }
 
     private void setFullScreenModeIfLandscapeOrientation() {

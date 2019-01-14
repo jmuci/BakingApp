@@ -28,4 +28,5 @@ task clean(type: Delete) {
 
 ext {
     DAGGER_VERSION = 2.19
+    mobiusVersion='1.2.0'
 }

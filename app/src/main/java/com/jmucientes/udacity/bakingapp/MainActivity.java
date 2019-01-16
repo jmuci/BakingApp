@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import com.jmucientes.udacity.bakingapp.data.network.ConnectionState;
 import com.jmucientes.udacity.bakingapp.home.HomeFragment;
 import com.jmucientes.udacity.bakingapp.model.Recipe;
 import com.jmucientes.udacity.bakingapp.stepdetail.StepDetailFragment;
@@ -32,8 +31,6 @@ public class MainActivity extends DaggerAppCompatActivity implements FragmentMan
 
     @Inject
     HomeFragment mHomeFragment;
-    @Inject
-    ConnectionState mConnectionState;
 
     private String mToolbarTitle;
     private FrameLayout mFragmentContainer2;
@@ -70,17 +67,6 @@ public class MainActivity extends DaggerAppCompatActivity implements FragmentMan
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        registerReceiver(mConnectionState, mIntentFilter);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        unregisterReceiver(mConnectionState);
-    }
 
     private void setFullScreenModeIfLandscapeOrientation() {
         int orientation = this.getResources().getConfiguration().orientation;

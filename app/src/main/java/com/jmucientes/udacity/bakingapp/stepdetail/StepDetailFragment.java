@@ -90,7 +90,7 @@ public class StepDetailFragment extends DaggerFragment {
                     mThumbnailImage.setVisibility(View.GONE);
                 }
             } else {
-                Log.e(TAG, "Got invalid recipe - index combo.");
+                Log.e(TAG, "Got invalid recipes - index combo.");
             }
         }
     }

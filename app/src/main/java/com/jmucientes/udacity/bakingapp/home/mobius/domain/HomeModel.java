@@ -1,26 +1,23 @@
 package com.jmucientes.udacity.bakingapp.home.mobius.domain;
 
+import android.support.annotation.Nullable;
+
 import com.google.auto.value.AutoValue;
-import com.jmucientes.udacity.bakingapp.data.network.ConnectionState;
-import com.jmucientes.udacity.bakingapp.model.RecipesModel;
+import com.google.common.collect.ImmutableList;
+import com.jmucientes.udacity.bakingapp.model.Recipe;
 
 @AutoValue
 public abstract class HomeModel {
 
     public static final HomeModel DEFAULT = builder()
-            .connectionState(null)
-            .recipesModel(null)
+            .recipes(null)
             .build();
 
-    public abstract ConnectionState connectionState();
-    public abstract RecipesModel recipesModel();
+    @Nullable
+    public abstract ImmutableList<Recipe> recipes();
 
-    public HomeModel withConnectionState(ConnectionState state) {
-        return toBuilder().connectionState(state).build();
-    }
-
-    public HomeModel withRecipesModel(RecipesModel recipesModel) {
-        return toBuilder().recipesModel(recipesModel).build();
+    public HomeModel withRecipes(ImmutableList<Recipe> recipes) {
+        return toBuilder().recipes(recipes).build();
     }
 
     public abstract Builder toBuilder();
@@ -31,8 +28,7 @@ public abstract class HomeModel {
 
     @AutoValue.Builder
     public abstract static class Builder {
-        public abstract Builder connectionState(ConnectionState state);
-        public abstract Builder recipesModel(RecipesModel recipesModel);
+        public abstract Builder recipes(ImmutableList<Recipe> recipes);
         public abstract HomeModel build();
     }
 }

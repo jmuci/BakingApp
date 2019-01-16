@@ -44,7 +44,7 @@ public class RecipeRepository {
 
     private LiveData<List<Recipe>> fetchAllRecipesFromNetwork() {
         final MutableLiveData<List<Recipe>> data = new MutableLiveData<>();
-        Log.d(TAG, "Requesting recipe list from Network.");
+        Log.d(TAG, "Requesting recipes list from Network.");
         mDataService.getAllRecipes().enqueue(new Callback<List<Recipe>>() {
             @Override
             public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {

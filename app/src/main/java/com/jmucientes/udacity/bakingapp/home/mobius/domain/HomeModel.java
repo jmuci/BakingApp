@@ -10,7 +10,7 @@ import com.jmucientes.udacity.bakingapp.model.Recipe;
 public abstract class HomeModel {
 
     public static final HomeModel DEFAULT = builder()
-            .recipes(null)
+            .recipes(ImmutableList.of())
             .build();
 
     @Nullable

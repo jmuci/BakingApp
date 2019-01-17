@@ -15,6 +15,7 @@ public final class HomeLogic {
         return first(model);
     }
 
+    @NonNull
     public static Next<HomeModel, HomeEffect> update(HomeModel model, HomeEvent event) {
 
         return event.map(

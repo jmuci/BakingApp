@@ -8,6 +8,6 @@ import com.spotify.dataenum.dataenum_case;
 @DataEnum
 interface HomeEvent_dataenum {
 
-    dataenum_case RecipeCardClicked();
+    dataenum_case RecipeCardClicked(Recipe recipe);
     dataenum_case RecipesLoaded(ImmutableList<Recipe> recipes);
 }

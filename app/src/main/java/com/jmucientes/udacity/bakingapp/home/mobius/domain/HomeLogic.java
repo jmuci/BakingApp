@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 import com.spotify.mobius.First;
 import com.spotify.mobius.Next;
 
+import static com.jmucientes.udacity.bakingapp.home.mobius.domain.HomeEffect.*;
+import static com.jmucientes.udacity.bakingapp.home.mobius.domain.HomeEffect.requestRecipes;
 import static com.spotify.mobius.Effects.effects;
 import static com.spotify.mobius.First.first;
 
@@ -13,7 +15,7 @@ public final class HomeLogic {
 
     @NonNull
     public static First<HomeModel, HomeEffect> init(HomeModel model) {
-        return first(model);
+        return first(model, effects(requestRecipes()));
     }
 
     @NonNull
@@ -27,7 +29,7 @@ public final class HomeLogic {
 
     private static Next<HomeModel, HomeEffect> onRecipeCardClicked(HomeModel model, HomeEvent.RecipeCardClicked recipeCardClickedEvent) {
         if (model.recipes() != null && !model.recipes().isEmpty()) {
-            return Next.dispatch(effects(HomeEffect.navigateToRecipeDetailsList(recipeCardClickedEvent.recipe())));
+            return Next.dispatch(effects(navigateToRecipeDetailsList(recipeCardClickedEvent.recipe())));
         } else {
             return Next.noChange();
         }

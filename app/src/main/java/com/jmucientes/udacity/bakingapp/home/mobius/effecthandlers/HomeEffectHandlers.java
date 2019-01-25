@@ -11,7 +11,17 @@ public class HomeEffectHandlers {
     private HomeEffectHandlers() {
     }
 
-    public static Observable.Transformer<HomeEffect, HomeEvent> provideEffectHandler() {
-        return RxMobius.<HomeEffect, HomeEvent>subtypeEffectHandler().build();
+    public Observable.Transformer<HomeEffect, HomeEvent> provideEffectHandler() {
+        return RxMobius.<HomeEffect, HomeEvent>subtypeEffectHandler()
+                .addAction(HomeEffect.RequestRecipes.class, this::handleRequestRecipes)
+                .addConsumer(HomeEffect.NavigateToRecipeDetailsList.class, recipe -> handleNavigateToRecipe(recipe))
+                .build();
+    }
+
+    private void handleNavigateToRecipe(HomeEffect.NavigateToRecipeDetailsList recipe) {
+
+    }
+
+    private void handleRequestRecipes() {
     }
 }

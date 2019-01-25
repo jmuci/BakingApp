@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import static com.google.common.collect.ImmutableList.*;
+import static com.jmucientes.udacity.bakingapp.home.mobius.domain.HomeEffect.requestRecipes;
 import static com.spotify.mobius.test.InitSpec.assertThatFirst;
 import static com.spotify.mobius.test.NextMatchers.hasEffects;
 import static com.spotify.mobius.test.NextMatchers.hasModel;
@@ -38,7 +39,8 @@ public class HomeLogicTest {
     @Test
     public void testInitState() {
         initSpec.when(HomeModel.DEFAULT)
-            .then(assertThatFirst(FirstMatchers.hasModel(HomeModel.DEFAULT.withRecipes(of()))));
+            .then(assertThatFirst(FirstMatchers.hasModel(HomeModel.DEFAULT.withRecipes(of())),
+                    FirstMatchers.hasEffects(requestRecipes())));
     }
 
     @Test

@@ -14,7 +14,7 @@ public class ImagesByIdMapUtil {
         Map<Integer, String> map = new HashMap<>(4);
         map.put(1, "http://eatdrinkpaleo.com.au/wp-content/uploads/2014/04/paleo-chocolate-tart-800-h2.jpg");
         map.put(2, "https://images.media-allrecipes.com/userphotos/720x405/3850414.jpg");
-        map.put(3, "https://prods3.imgix.net/images/articles/2017_08/Non-Feature-yellow-cake-chocolate-frosting-recipes-dessert.jpg?auto=format%2Ccompress&dpr=2&ixjsv=2.2.3&q=50&w=750");
+        map.put(3, "https://i.ibb.co/fQQkcpv/yellow-cake.jpg");
         map.put(4, "https://kitchenfunwithmy3sons.com/wp-content/uploads/2017/04/Easy-Lemon-Blueberry-Cheesecake-Dessert-680x453.jpg");
         idToImageMap = Collections.unmodifiableMap(map);
     }

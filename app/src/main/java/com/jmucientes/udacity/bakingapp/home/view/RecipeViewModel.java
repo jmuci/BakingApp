@@ -20,6 +20,7 @@ import javax.inject.Inject;
 @ApplicationScope
 public class RecipeViewModel extends AndroidViewModel {
 
+    //TODO Integrate ViewModel with Mobius
     private static final String TAG = RecipeViewModel.class.getName();
     private final LiveData<List<Recipe>> mRecipeList;
     private final RecipeRepository mRecipeRepository;
@@ -29,7 +30,7 @@ public class RecipeViewModel extends AndroidViewModel {
         super(application);
         mRecipeRepository = recipeRepository;
         
-        Log.d(TAG, "Instantiated MovieViewModel. Fetching movie list");
+        Log.d(TAG, "Instantiated RecipeViewModel. Fetching movie list");
         mRecipeList = mRecipeRepository.getRecipes();
     }
 

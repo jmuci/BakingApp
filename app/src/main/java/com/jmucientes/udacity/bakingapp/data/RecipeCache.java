@@ -1,7 +1,12 @@
 package com.jmucientes.udacity.bakingapp.data;
 
+import android.support.annotation.NonNull;
+import android.util.Log;
+
 import com.jmucientes.udacity.bakingapp.model.Recipe;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -17,11 +22,14 @@ class RecipeCache {
     public RecipeCache() {
     }
 
+    @NonNull
     public List<Recipe> getRecipes() {
         if (!isCacheExpired() && mRecipeList != null && mRecipeList.size() > 0) {
+            Log.d("RecipeCache", "Got recipes from Cache");
             return mRecipeList;
         }
-        return null;
+        Log.d("RecipeCache", " EMPTY cache");
+        return Collections.emptyList();
     }
 
     public void saveRecipes(List<Recipe> recipeList) {

@@ -70,7 +70,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 * [Udacity Android Nanodegree](https://eu.udacity.com/course/android-developer-nanodegree-by-google--nd801). 
 
-### TODOs
+### General TODOs
 Main epics coded while developing this app. 
 
 * [X] Set up Recycler view for MainFragment with Card Views <br>
@@ -94,3 +94,15 @@ Main epics coded while developing this app.
 * [X] Application has a companion homescreen widget. 
 * [X] Widget displays ingredient list for desired recipe.
 * [X] Write Esspresso Tests to test aspects of the UI.
+* [ ] Cache Picasso images on OkHTTP Cache https://stackoverflow.com/questions/23978828/how-do-i-use-disk-caching-in-picasso
+* [ ] Serve recipes JSON from own free Json server
+* [ ] Serve image thumbnails from own free image hosts
+
+### Mobius TODOS
+* [ ] Implement in Mobius navigate to recipe details step. 
+* [ ] Connect Mobius loop to ViewModel and clean up duplicated task and code.
+* [ ] Remove non-Rx network requests and clean up Repository class
+* [ ] Add error handling to Mobius model, and use snackbar to show errors. 
+* [ ] Consider having connection as part of the model. 
+* [ ] Enable Home View in offline mode. 
+* [ ] Write Unit Tests  

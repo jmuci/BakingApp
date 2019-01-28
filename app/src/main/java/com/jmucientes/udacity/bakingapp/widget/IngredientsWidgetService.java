@@ -17,7 +17,6 @@ public class IngredientsWidgetService extends RemoteViewsService {
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        Log.d("Widget::RVFactory", "onGetViewFactory");
         return new IngredientsRemoteViewsFactory(this.getApplicationContext(), intent);
     }
 
@@ -59,7 +58,6 @@ public class IngredientsWidgetService extends RemoteViewsService {
 
         @Override
         public RemoteViews getViewAt(int i) {
-            Log.d("Widget::Service", "getViewAt " + i);
             RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.widget_layout_item);
             views.setTextViewText(R.id.widget_list_item, mIngredientsList.get(i));
 

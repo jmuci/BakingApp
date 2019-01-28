@@ -11,6 +11,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Maybe;
+import io.reactivex.Single;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,21 +32,35 @@ public class RecipeRepository {
     }
 
     public LiveData<List<Recipe>> getRecipes() {
-        Log.d(TAG, "Get recipes. ");
-
         List<Recipe> cachedRecipeList = mRecipeCache.getRecipes();
         if (cachedRecipeList != null && cachedRecipeList.size() > 0) {
             MutableLiveData<List<Recipe>> cachedRecipesLiveData = new MutableLiveData<>();
             cachedRecipesLiveData.setValue(cachedRecipeList);
-            Log.d(TAG, "Got recipes from local cache. ");
+            Log.d(TAG, "LiveDate: Got recipes from local cache ");
             return cachedRecipesLiveData;
         }
         return fetchAllRecipesFromNetwork();
     }
 
+    public Maybe<List<Recipe>> getRecipesMaybe() {
+        Log.d(TAG, "Get recipes observable. ");
+        return Maybe.concat(gerRecipesFromCache(), fetchAllRecipesFromNetworkObservable().toMaybe()).firstElement();
+    }
+
+    private Maybe<List<Recipe>> gerRecipesFromCache() {
+        //return Maybe.just(mRecipeCache.getRecipes());
+        Maybe<List<Recipe>> cachedRecipesMaybe;
+        if (mRecipeCache.getRecipes().size() > 0){
+            cachedRecipesMaybe = Maybe.just(mRecipeCache.getRecipes());
+        } else {
+            cachedRecipesMaybe = Maybe.empty();
+        }
+        return cachedRecipesMaybe;
+    }
+
     private LiveData<List<Recipe>> fetchAllRecipesFromNetwork() {
         final MutableLiveData<List<Recipe>> data = new MutableLiveData<>();
-        Log.d(TAG, "Requesting recipes list from Network.");
+        Log.d(TAG, "ViewModel: Requesting recipes list from Network.");
         mDataService.getAllRecipes().enqueue(new Callback<List<Recipe>>() {
             @Override
             public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
@@ -61,6 +77,13 @@ public class RecipeRepository {
         });
         return data;
 
+    }
+
+    public Single<List<Recipe>> fetchAllRecipesFromNetworkObservable() {
+        Log.d(TAG, "Requesting recipes list from Network with Rx.");
+        return mDataService
+                .getAllRecipesRx()
+                .doOnSuccess(mRecipeCache::saveRecipes);
     }
 
     public LiveData<List<Recipe>> refreshData() {

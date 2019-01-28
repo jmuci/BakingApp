@@ -1,5 +1,6 @@
 package com.jmucientes.udacity.bakingapp.data.network;
 
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.jmucientes.udacity.bakingapp.di.scopes.ApplicationScope;
 
 import dagger.Module;
@@ -20,6 +21,7 @@ public class NetworkModule {
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build();
         }
         return retrofit;

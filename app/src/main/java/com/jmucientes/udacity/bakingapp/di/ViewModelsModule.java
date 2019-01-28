@@ -17,9 +17,9 @@ public abstract class ViewModelsModule {
     @IntoMap
     @ViewModelKey(RecipeViewModel.class)
     @ApplicationScope
-    abstract ViewModel bindMovieViewModel(RecipeViewModel movieDetailViewModel);
+    abstract ViewModel bindRecipeViewModel(RecipeViewModel recipeViewModel);
 
     @Binds
     @ApplicationScope
-    abstract ViewModelProvider.Factory bindViewModelFactory(ViewModelFactory moviesViewModelFactory);
+    abstract ViewModelProvider.Factory bindViewModelFactory(ViewModelFactory recipeViewModelFactory);
 }

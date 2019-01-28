@@ -10,6 +10,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +18,17 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.jmucientes.udacity.bakingapp.R;
+import com.jmucientes.udacity.bakingapp.home.mobius.HomeInjector;
+import com.jmucientes.udacity.bakingapp.home.mobius.domain.HomeEvent;
+import com.jmucientes.udacity.bakingapp.home.mobius.domain.HomeModel;
 import com.jmucientes.udacity.bakingapp.home.view.RecipeAdapter;
 import com.jmucientes.udacity.bakingapp.home.view.RecipeViewModel;
+import com.jmucientes.udacity.bakingapp.model.Recipe;
+import com.spotify.mobius.Connection;
+import com.spotify.mobius.MobiusLoop;
+import com.spotify.mobius.functions.Consumer;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -26,6 +36,7 @@ import dagger.android.support.DaggerFragment;
 
 public class HomeFragment extends DaggerFragment {
 
+    private static final String TAG = HomeFragment.class.getName();
     private RecipeViewModel mViewModel;
     private RecyclerView mRecipeCardsRV;
     private SwipeRefreshLayout mSwipeRefresh;
@@ -35,7 +46,11 @@ public class HomeFragment extends DaggerFragment {
     RecipeAdapter mRecipeAdapter;
     @Inject
     ViewModelProvider.Factory mViewModelFactory;
+    @Inject
+    HomeInjector mHomeInjector;
+
     private ProgressBar mProgressBar;
+    private MobiusLoop.Controller<HomeModel, HomeEvent> mController;
 
     @Inject
     public HomeFragment() {
@@ -50,9 +65,11 @@ public class HomeFragment extends DaggerFragment {
         mProgressBar = view.findViewById(R.id.progress_bar);
         mSwipeRefresh = view.findViewById(R.id.main_swipe_container);
 
-        mSwipeRefresh.setOnRefreshListener(() -> {
-            refreshDataSetFromNetwork();
-        });
+        mController = mHomeInjector.createController(HomeModel.DEFAULT);
+
+        mController.connect(this::connectViews);
+
+        mSwipeRefresh.setOnRefreshListener(this::refreshDataSetFromNetwork);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -75,7 +92,8 @@ public class HomeFragment extends DaggerFragment {
     }
 
     private void refreshDataSetFromNetwork() {
-        mViewModel.refreshData().observe(this, recipeList -> {
+        // TODO Move this to movius
+        mViewModel.refreshData().observe(this, (List<Recipe> recipeList) -> {
              if (recipeList != null && recipeList.size() > 0) {
                  mRecipeAdapter.updateDataSet(recipeList);
              } else {
@@ -89,18 +107,39 @@ public class HomeFragment extends DaggerFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(RecipeViewModel.class);
-        requestDataSetLoadAndObserveChanges();
     }
 
-    private void requestDataSetLoadAndObserveChanges() {
-        mViewModel.getRecipeList().observe(this, recipeList -> {
-            mProgressBar.setVisibility(View.GONE);
-            if (recipeList != null && recipeList.size() > 0) {
-                mRecipeAdapter.updateDataSet(recipeList);
-            } else if (recipeList == null) {
-                Toast.makeText(this.getContext(), "Failed to reach server. Try again later", Toast.LENGTH_LONG).show();
+    @Override
+    public void onStart() {
+        super.onStart();
+        mController.start();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mController.stop();
+    }
+
+    private Connection<HomeModel> connectViews(Consumer<HomeEvent> eventConsumer) {
+        // TODO send events to the consumer when the button is pressed
+        //button.setOnClickListener(view -> eventConsumer.accept(HomeEvent.buttonPressed()));
+
+        return new Connection<HomeModel>() {
+            public void accept(HomeModel model) {
+                Log.d(TAG, "connectViews().accept() Model: " + model.recipes());
+                // this will be called whenever there is a new model
+                if (model.recipes().size() > 0) {
+                    mProgressBar.setVisibility(View.GONE);
+                    mRecipeAdapter.updateDataSet(model.recipes());
+                }
             }
-        });
+
+            public void dispose() {
+                // don't forget to remove listeners when the UI is disconnected
+                //button.setOnClickListener(null);
+            }
+        };
     }
 
 }

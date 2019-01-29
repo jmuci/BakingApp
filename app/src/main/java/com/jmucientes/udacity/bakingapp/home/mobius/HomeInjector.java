@@ -13,10 +13,11 @@ import com.spotify.mobius.Mobius;
 import com.spotify.mobius.MobiusLoop;
 import com.spotify.mobius.android.AndroidLogger;
 import com.spotify.mobius.android.runners.MainThreadWorkRunner;
-import com.spotify.mobius.functions.Consumer;
 import com.spotify.mobius.rx2.RxMobius;
 
 import javax.inject.Inject;
+
+import io.reactivex.functions.Consumer;
 
 public class HomeInjector {
 

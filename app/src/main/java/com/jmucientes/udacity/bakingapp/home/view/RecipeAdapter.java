@@ -29,6 +29,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     private static final String TAG = RecipeAdapter.class.getName();
     private List<Recipe> mRecipeList;
     private WeakReference<Context> mContextWeakReference;
+    private RecipeItemListener mRecipeItemListener;
 
     public class RecipeViewHolder extends RecyclerView.ViewHolder {
 
@@ -81,7 +82,11 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
                         String.valueOf(mContextWeakReference.get().getResources().getText(R.string.number_of_steps_lable)),
                         mRecipeList.get(pos).getSteps().size())
         );
-        recipeViewHolder.mCardView.setOnClickListener(view -> navigateToStepDetailsViewFragment(mRecipeList.get(pos)));
+        recipeViewHolder.mCardView.setOnClickListener(view -> {
+            if (mRecipeItemListener != null) {
+                mRecipeItemListener.onRecipeClick(mRecipeList.get(pos));
+            }
+        });
     }
 
     //TODO Remove from here when Mobius Click working
@@ -96,9 +101,16 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
     @Override
     public int getItemCount() {
-        return mRecipeList != null? mRecipeList.size() : 0;
+        return mRecipeList != null ? mRecipeList.size() : 0;
     }
 
+    public void setItemListener(RecipeItemListener listener) {
+        mRecipeItemListener = listener;
+    }
+
+    public interface RecipeItemListener {
+        void onRecipeClick(Recipe recipe);
+    }
 
     private void bindImageById(int id, ImageView imageView) {
         Picasso.get()
@@ -108,4 +120,6 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
                 .error(R.drawable.ic_broken_image_gray_64dp)
                 .into(imageView);
     }
+
+
 }

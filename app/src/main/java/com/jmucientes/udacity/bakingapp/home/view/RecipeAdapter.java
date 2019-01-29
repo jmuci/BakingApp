@@ -84,6 +84,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         recipeViewHolder.mCardView.setOnClickListener(view -> navigateToStepDetailsViewFragment(mRecipeList.get(pos)));
     }
 
+    //TODO Remove from here when Mobius Click working
     private void navigateToStepDetailsViewFragment(Recipe recipe) {
         RecipeDetailListFragment recipeDetailListFragment = new RecipeDetailListFragment();
         Bundle args = new Bundle();

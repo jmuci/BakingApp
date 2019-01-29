@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.jmucientes.udacity.bakingapp.MainActivity;
 import com.jmucientes.udacity.bakingapp.R;
 import com.jmucientes.udacity.bakingapp.home.mobius.HomeInjector;
 import com.jmucientes.udacity.bakingapp.home.mobius.domain.HomeEvent;
@@ -24,11 +25,13 @@ import com.jmucientes.udacity.bakingapp.home.mobius.domain.HomeModel;
 import com.jmucientes.udacity.bakingapp.home.view.RecipeAdapter;
 import com.jmucientes.udacity.bakingapp.home.view.RecipeViewModel;
 import com.jmucientes.udacity.bakingapp.model.Recipe;
+import com.jmucientes.udacity.bakingapp.recipedetailslist.RecipeDetailListFragment;
 import com.spotify.mobius.Connection;
 import com.spotify.mobius.MobiusLoop;
 import com.spotify.mobius.functions.Consumer;
 
 import java.util.List;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -65,7 +68,7 @@ public class HomeFragment extends DaggerFragment {
         mProgressBar = view.findViewById(R.id.progress_bar);
         mSwipeRefresh = view.findViewById(R.id.main_swipe_container);
 
-        mController = mHomeInjector.createController(HomeModel.DEFAULT);
+        mController = mHomeInjector.createController(HomeModel.DEFAULT, this::navigateToStepDetailsViewFragment);
 
         mController.connect(this::connectViews);
 
@@ -142,4 +145,12 @@ public class HomeFragment extends DaggerFragment {
         };
     }
 
+    public void navigateToStepDetailsViewFragment(Recipe recipe) {
+        RecipeDetailListFragment recipeDetailListFragment = new RecipeDetailListFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(RecipeDetailListFragment.ARG_RECIPE, recipe);
+        recipeDetailListFragment.setArguments(args);
+
+        ((MainActivity) Objects.requireNonNull(getActivity())).navigateToFragmentAndSetToolbarTitle(recipeDetailListFragment, recipe.getName());
+    }
 }

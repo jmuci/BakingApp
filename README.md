@@ -99,7 +99,7 @@ Main epics coded while developing this app.
 * [ ] Serve image thumbnails from own free image hosts
 
 ### Mobius TODOS
-* [ ] Implement in Mobius navigate to recipe details step. 
+* [X] Implement in Mobius navigate to recipe details step. 
 * [ ] Connect Mobius loop to ViewModel and clean up duplicated task and code.
 * [ ] Remove non-Rx network requests and clean up Repository class
 * [ ] Add error handling to Mobius model, and use snackbar to show errors. 

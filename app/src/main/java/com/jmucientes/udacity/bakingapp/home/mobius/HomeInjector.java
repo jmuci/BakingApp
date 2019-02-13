@@ -17,6 +17,7 @@ import com.spotify.mobius.rx2.RxMobius;
 
 import javax.inject.Inject;
 
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 
 public class HomeInjector {
@@ -30,15 +31,18 @@ public class HomeInjector {
 
     public MobiusLoop.Controller<HomeModel, HomeEvent> createController(
             @NonNull HomeModel defaultModel,
-            @NonNull Consumer<Recipe> navigateToDetails) {
+            @NonNull Consumer<Recipe> navigateToDetails,
+            @NonNull Action showErrorView) {
         return Mobius.controller(
-                createLoopFactory(navigateToDetails),
+                createLoopFactory(navigateToDetails, showErrorView),
                 defaultModel,
                 MainThreadWorkRunner.create());
     }
 
-    private MobiusLoop.Factory<HomeModel, HomeEvent, HomeEffect>  createLoopFactory(Consumer<Recipe> navigateToDetails) {
-        return RxMobius.loop(HomeLogic::update, HomeEffectHandlers.provideEffectHandler(mRecipeRepository, navigateToDetails))
+    private MobiusLoop.Factory<HomeModel, HomeEvent, HomeEffect>  createLoopFactory(
+            Consumer<Recipe> navigateToDetails,
+            Action showErrorView) {
+        return RxMobius.loop(HomeLogic::update, HomeEffectHandlers.provideEffectHandler(mRecipeRepository, navigateToDetails, showErrorView))
                         .init(HomeLogic::init)
                         .logger(AndroidLogger.tag("BakingApp"));
     }

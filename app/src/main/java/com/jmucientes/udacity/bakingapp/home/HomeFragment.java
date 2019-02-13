@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -54,6 +55,7 @@ public class HomeFragment extends DaggerFragment {
 
     private ProgressBar mProgressBar;
     private MobiusLoop.Controller<HomeModel, HomeEvent> mController;
+    private LinearLayout mErrorView;
 
     @Inject
     public HomeFragment() {
@@ -67,8 +69,12 @@ public class HomeFragment extends DaggerFragment {
         mRecipeCardsRV = view.findViewById(R.id.recipes_recycler_view);
         mProgressBar = view.findViewById(R.id.progress_bar);
         mSwipeRefresh = view.findViewById(R.id.main_swipe_container);
+        mErrorView = view.findViewById(R.id.loading_error_view);
 
-        mController = mHomeInjector.createController(HomeModel.DEFAULT, this::navigateToStepDetailsViewFragment);
+        mController = mHomeInjector.createController(
+                HomeModel.DEFAULT,
+                this::navigateToStepDetailsViewFragment,
+                this::showErrorView);
 
         mController.connect(this::connectViews);
 
@@ -95,9 +101,10 @@ public class HomeFragment extends DaggerFragment {
     }
 
     private void refreshDataSetFromNetwork() {
-        // TODO Move this to movius
+        // TODO Move this to mobius
         mViewModel.refreshData().observe(this, (List<Recipe> recipeList) -> {
              if (recipeList != null && recipeList.size() > 0) {
+                 mErrorView.setVisibility(View.GONE);
                  mRecipeAdapter.updateDataSet(recipeList);
              } else {
                  Toast.makeText(this.getContext(), "Failed to contact server.", Toast.LENGTH_SHORT).show();
@@ -129,7 +136,7 @@ public class HomeFragment extends DaggerFragment {
         //button.setOnClickListener(view -> eventConsumer.accept(HomeEvent.buttonPressed()));
         addUiListeners(eventConsumer);
         return new Connection<HomeModel>() {
-            public void accept(HomeModel model) {
+            public void accept(@NonNull HomeModel model) {
 
                 Log.d(TAG, "connectViews().accept() Model: " + model.recipes());
                 // this will be called whenever there is a new model
@@ -159,4 +166,10 @@ public class HomeFragment extends DaggerFragment {
 
         ((MainActivity) Objects.requireNonNull(getActivity())).navigateToFragmentAndSetToolbarTitle(recipeDetailListFragment, recipe.getName());
     }
+
+    public void showErrorView() {
+        mProgressBar.setVisibility(View.GONE);
+        mErrorView.setVisibility(View.VISIBLE);
+    }
+
 }

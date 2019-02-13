@@ -1,7 +1,6 @@
 package com.jmucientes.udacity.bakingapp.home.view;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -11,11 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.jmucientes.udacity.bakingapp.MainActivity;
 import com.jmucientes.udacity.bakingapp.R;
 import com.jmucientes.udacity.bakingapp.data.ImagesByIdMapUtil;
 import com.jmucientes.udacity.bakingapp.model.Recipe;
-import com.jmucientes.udacity.bakingapp.recipedetailslist.RecipeDetailListFragment;
 import com.squareup.picasso.Picasso;
 
 import java.lang.ref.WeakReference;
@@ -87,16 +84,6 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
                 mRecipeItemListener.onRecipeClick(mRecipeList.get(pos));
             }
         });
-    }
-
-    //TODO Remove from here when Mobius Click working
-    private void navigateToStepDetailsViewFragment(Recipe recipe) {
-        RecipeDetailListFragment recipeDetailListFragment = new RecipeDetailListFragment();
-        Bundle args = new Bundle();
-        args.putParcelable(RecipeDetailListFragment.ARG_RECIPE, recipe);
-        recipeDetailListFragment.setArguments(args);
-
-        ((MainActivity) mContextWeakReference.get()).navigateToFragmentAndSetToolbarTitle(recipeDetailListFragment, recipe.getName());
     }
 
     @Override

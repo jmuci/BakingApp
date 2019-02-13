@@ -11,13 +11,20 @@ public abstract class HomeModel {
 
     public static final HomeModel DEFAULT = builder()
             .recipes(ImmutableList.of())
+            .loading(false)
             .build();
 
     @Nullable
     public abstract ImmutableList<Recipe> recipes();
 
+    public abstract Boolean loading();
+
     public HomeModel withRecipes(ImmutableList<Recipe> recipes) {
         return toBuilder().recipes(recipes).build();
+    }
+
+    public HomeModel withLoading(Boolean loading) {
+        return toBuilder().loading(loading).build();
     }
 
     public abstract Builder toBuilder();
@@ -29,6 +36,8 @@ public abstract class HomeModel {
     @AutoValue.Builder
     public abstract static class Builder {
         public abstract Builder recipes(ImmutableList<Recipe> recipes);
+        public abstract Builder loading(Boolean loading);
+
         public abstract HomeModel build();
     }
 }

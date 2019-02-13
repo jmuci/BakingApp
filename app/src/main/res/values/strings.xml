@@ -10,4 +10,5 @@
     <string name="appwidget_text">BakingApp</string>
     <string name="add_widget">Add widget</string>
     <string name="empty_widget_text">Ingredients will appear here shortly after you open the app.</string>
+    <string name="failed_to_load_error">Failed to load recipes. Is your device online?</string>
 </resources>

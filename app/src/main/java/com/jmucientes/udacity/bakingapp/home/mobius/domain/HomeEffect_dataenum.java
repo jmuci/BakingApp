@@ -9,4 +9,5 @@ interface HomeEffect_dataenum {
 
     dataenum_case RequestRecipes();
     dataenum_case NavigateToRecipeDetailsList(Recipe recipe);
+    dataenum_case ShowFeedback(FeedbackType type);
 }

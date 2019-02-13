@@ -6,8 +6,9 @@ import android.util.Log;
 import com.spotify.mobius.First;
 import com.spotify.mobius.Next;
 
-import static com.jmucientes.udacity.bakingapp.home.mobius.domain.HomeEffect.*;
+import static com.jmucientes.udacity.bakingapp.home.mobius.domain.HomeEffect.navigateToRecipeDetailsList;
 import static com.jmucientes.udacity.bakingapp.home.mobius.domain.HomeEffect.requestRecipes;
+import static com.jmucientes.udacity.bakingapp.home.mobius.domain.HomeEffect.showFeedback;
 import static com.spotify.mobius.Effects.effects;
 import static com.spotify.mobius.First.first;
 
@@ -27,7 +28,8 @@ public final class HomeLogic {
 
         return event.map(
                 recipeCardClicked -> onRecipeCardClicked(model, recipeCardClicked),
-                recipesLoaded -> onRecipesLoaded(model, recipesLoaded)
+                recipesLoaded -> onRecipesLoaded(model, recipesLoaded),
+                taskLoadingFailed -> onTaskLoadingFailed(model)
         );
     }
 
@@ -48,5 +50,9 @@ public final class HomeLogic {
         }
         Log.d(TAG, "update().onRecipesLoaded() -> Next.next(model.with). Recipes: " + recipesLoadedEvent.recipes());
         return Next.next(model.withRecipes(recipesLoadedEvent.recipes()));
+    }
+
+    private static Next<HomeModel, HomeEffect> onTaskLoadingFailed(HomeModel model) {
+        return Next.dispatch(effects(showFeedback(FeedbackType.LOADING_ERROR)));
     }
 }

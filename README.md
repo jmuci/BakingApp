@@ -100,6 +100,9 @@ Main epics coded while developing this app.
 
 ### Mobius TODOS
 * [X] Implement in Mobius navigate to recipe details step. 
+* [X] Show error view when failing to fetch items.
+* [ ] Unit test all Mobius code
+* [ ] Use loading state to show or hide loading bar.
 * [ ] Connect Mobius loop to ViewModel and clean up duplicated task and code.
 * [ ] Remove non-Rx network requests and clean up Repository class
 * [ ] Add error handling to Mobius model, and use snackbar to show errors. 

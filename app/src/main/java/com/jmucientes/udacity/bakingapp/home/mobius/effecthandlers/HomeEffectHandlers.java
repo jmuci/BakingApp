@@ -1,5 +1,6 @@
 package com.jmucientes.udacity.bakingapp.home.mobius.effecthandlers;
 
+import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
 import com.google.common.collect.ImmutableList;
@@ -37,7 +38,8 @@ public class HomeEffectHandlers {
                 .build();
     }
 
-    private static ObservableTransformer<RequestRecipes, HomeEvent> handleRequestRecipes(
+    @VisibleForTesting
+    static ObservableTransformer<RequestRecipes, HomeEvent> handleRequestRecipes(
             RecipeRepository recipeRepository) {
         return requests ->
                 requests.flatMap(request ->
@@ -49,12 +51,13 @@ public class HomeEffectHandlers {
                                 .doOnError(error -> Log.w("HomeEffectHandler", "Failed to load recipes: " + error.getMessage())));
     }
 
-    private static Consumer<NavigateToRecipeDetailsList> handleNavigateToRecipe(Consumer<Recipe> command) {
+    @VisibleForTesting
+    static Consumer<NavigateToRecipeDetailsList> handleNavigateToRecipe(Consumer<Recipe> command) {
         return navigationEffect -> command.accept(navigationEffect.recipe());
     }
 
-
-    private static Consumer<HomeEffect.ShowFeedback> handleShowFeedback(Action showErrorView) {
+    @VisibleForTesting
+    static Consumer<HomeEffect.ShowFeedback> handleShowFeedback(Action showErrorView) {
 
         return showFeedback -> {
             switch (showFeedback.type()) {

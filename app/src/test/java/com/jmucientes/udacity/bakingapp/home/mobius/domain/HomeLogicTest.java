@@ -13,6 +13,7 @@ import org.junit.runners.JUnit4;
 
 import static com.google.common.collect.ImmutableList.*;
 import static com.jmucientes.udacity.bakingapp.home.mobius.domain.HomeEffect.requestRecipes;
+import static com.jmucientes.udacity.bakingapp.home.mobius.domain.HomeEffect.showFeedback;
 import static com.spotify.mobius.test.InitSpec.assertThatFirst;
 import static com.spotify.mobius.test.NextMatchers.hasEffects;
 import static com.spotify.mobius.test.NextMatchers.hasModel;
@@ -46,16 +47,16 @@ public class HomeLogicTest {
     @Test
     public void loadingRecipesWhenInitState_shouldUpdatemodel() {
         ImmutableList<Recipe> receivedRecipes = of(createRecipe("LemonCake"), createRecipe("Brownie"));
-        HomeModel stateWithSomeRecipes = HomeModel.builder().recipes(receivedRecipes).build();
+        HomeModel stateWithSomeRecipes = HomeModel.builder().recipes(receivedRecipes).loading(false).build();
         updateSpec.given(HomeModel.DEFAULT)
                 .when(HomeEvent.recipesLoaded(receivedRecipes))
-                .then(assertThatNext(hasModel(stateWithSomeRecipes.withRecipes(receivedRecipes)), hasNoEffects()));
+                .then(assertThatNext(hasModel(stateWithSomeRecipes.withRecipes(receivedRecipes).withLoading(false)), hasNoEffects()));
     }
 
     @Test
     public void loadingSameRecipeListThatIsAlreadyInModel_shouldNotUpdateModel() {
         ImmutableList<Recipe> receivedRecipes = of(createRecipe("LemonCake"), createRecipe("Brownie"));
-        HomeModel stateWithSomeRecipes = HomeModel.builder().recipes(receivedRecipes).build();
+        HomeModel stateWithSomeRecipes = HomeModel.builder().recipes(receivedRecipes).loading(false).build();
         updateSpec.given(stateWithSomeRecipes)
                 .when(HomeEvent.recipesLoaded(receivedRecipes))
                 .then(assertThatNext(hasNothing()));
@@ -64,16 +65,24 @@ public class HomeLogicTest {
     @Test
     public void loadingNewRecipes_shouldUpdateModelReplacingOldRecipes() {
         ImmutableList<Recipe> receivedRecipes = of(createRecipe("LemonCake"), createRecipe("Brownie"));
-        HomeModel stateWithSomeRecipes = HomeModel.builder().recipes(receivedRecipes).build();
-        HomeModel initialState = HomeModel.builder().recipes(of(createRecipe("Cheesecake"))).build();
+        HomeModel stateWithSomeRecipes = HomeModel.builder()
+                .recipes(receivedRecipes)
+                .loading(false)
+                .build();
+
+        HomeModel initialState = HomeModel.builder().recipes(of(createRecipe("Cheesecake"))).loading(false).build();
         updateSpec.given(initialState)
                 .when(HomeEvent.recipesLoaded(receivedRecipes))
-                .then(assertThatNext(hasModel(stateWithSomeRecipes.withRecipes(receivedRecipes)), hasNoEffects()));
+                .then(assertThatNext(hasModel(stateWithSomeRecipes.withRecipes(receivedRecipes).withLoading(false)), hasNoEffects()));
     }
 
     @Test
     public void loadingEmptyListOfRecipes_shouldNotUpdateModel() {
-        HomeModel stateWithSomeRecipes = HomeModel.builder().recipes(of(createRecipe("LemonCake"), createRecipe("Brownie"))).build();
+        HomeModel stateWithSomeRecipes = HomeModel.builder()
+                .recipes(of(createRecipe("LemonCake"), createRecipe("Brownie")))
+                .loading(false)
+                .build();
+
         updateSpec.given(stateWithSomeRecipes)
                 .when(HomeEvent.recipesLoaded(of()))
                 .then(assertThatNext(hasNothing()));
@@ -81,7 +90,11 @@ public class HomeLogicTest {
 
     @Test
     public void clickingOnACardWithPopulatedModel_shouldNavigateToCardRecipeDetails() {
-        HomeModel stateWithSomeRecipes = HomeModel.builder().recipes(of(createRecipe("LemonCake"), createRecipe("Brownie"))).build();
+        HomeModel stateWithSomeRecipes = HomeModel.builder()
+                .recipes(of(createRecipe("LemonCake"), createRecipe("Brownie")))
+                .loading(false)
+                .build();
+
         Recipe clickedRecipe = createRecipe("LemonCake");
         updateSpec.given(stateWithSomeRecipes)
                 .when(HomeEvent.recipeCardClicked(clickedRecipe))
@@ -91,11 +104,19 @@ public class HomeLogicTest {
     @Test
     public void clickingOnACardWithEmptyModel_shouldDoNothing() {
         // It should be impossible from a user perspective.
-        HomeModel stateWithSomeRecipes = HomeModel.builder().recipes(of()).build();
+        HomeModel stateWithSomeRecipes = HomeModel.builder().recipes(of()).loading(true).build();
         Recipe clickedRecipe = createRecipe("LemonCake");
         updateSpec.given(stateWithSomeRecipes)
                 .when(HomeEvent.recipeCardClicked(clickedRecipe))
                 .then(assertThatNext(hasNothing()));
+    }
+
+    @Test
+    public void failureToLoadTasKs_shouldShowFeedbackError() {
+        HomeModel emptyHomeModel = HomeModel.DEFAULT;
+        updateSpec.given(emptyHomeModel)
+                .when(HomeEvent.taskLoadingFailed())
+                .then(assertThatNext(hasNoModel(), hasEffects(showFeedback(FeedbackType.LOADING_ERROR))));
     }
 
     private Recipe createRecipe(String name) {

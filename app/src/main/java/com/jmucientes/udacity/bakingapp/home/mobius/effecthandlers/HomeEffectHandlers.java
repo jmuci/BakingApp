@@ -57,7 +57,7 @@ public class HomeEffectHandlers {
     }
 
     @VisibleForTesting
-    static Consumer<HomeEffect.ShowFeedback> handleShowFeedback(Action showErrorView) {
+    static Consumer<ShowFeedback> handleShowFeedback(Action showErrorView) {
 
         return showFeedback -> {
             switch (showFeedback.type()) {

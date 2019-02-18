@@ -24,10 +24,9 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.observers.TestObserver;
 import io.reactivex.subjects.PublishSubject;
 
+import static com.jmucientes.udacity.bakingapp.home.mobius.domain.HomeEffect.navigateToRecipeDetailsList;
 import static com.jmucientes.udacity.bakingapp.home.mobius.domain.HomeEffect.requestRecipes;
 import static com.jmucientes.udacity.bakingapp.home.mobius.domain.HomeEffect.showFeedback;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -38,7 +37,13 @@ public class HomeEffectHandlersTest {
     Action action;
 
     @Mock
+    Consumer<Recipe> command;
+
+    @Mock
     RecipeRepository mockRepository;
+
+    @Mock
+    Recipe recipe;
 
     @Before
     public void setUp() throws Exception {
@@ -61,12 +66,18 @@ public class HomeEffectHandlersTest {
     }
 
     @Test
+    public void testHandleNavigateToRecipe() throws Exception {
+        Consumer<HomeEffect.NavigateToRecipeDetailsList> underTest = HomeEffectHandlers.handleNavigateToRecipe(command);
+        underTest.accept(navigateToRecipeDetailsList(recipe).asNavigateToRecipeDetailsList());
+        verify(command).accept(recipe);
+    }
+
+    @Test
     public void testHandleShowLoadingErrorFeedback() throws Exception {
         Consumer<HomeEffect.ShowFeedback> underTest = HomeEffectHandlers.handleShowFeedback(action);
         underTest.accept(showFeedback(FeedbackType.LOADING_ERROR).asShowFeedback());
         verify(action).run();
     }
-
 
 
     static class TestCase<F, E> {

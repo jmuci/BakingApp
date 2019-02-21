@@ -10,10 +10,10 @@ import retrofit2.http.GET;
 
 public interface DataService {
 
-    @GET("/topher/2017/May/59121517_baking/baking.json")
+    @GET("bins/1bul8q")
     Single<List<Recipe>> getAllRecipesRx();
 
     //TODO Remove this one once all request logic moved to RX
-    @GET("/topher/2017/May/59121517_baking/baking.json")
+    @GET("bins/1bul8q")
     Call<List<Recipe>> getAllRecipes();
 }

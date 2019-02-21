@@ -109,3 +109,4 @@ Main epics coded while developing this app.
 * [ ] Consider having connection as part of the model. 
 * [ ] Enable Home View in offline mode. 
 * [ ] Write Unit Tests  
+* [X] Host JSON in own server/site/JSON host

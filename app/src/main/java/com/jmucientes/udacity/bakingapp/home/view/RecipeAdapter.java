@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jmucientes.udacity.bakingapp.R;
-import com.jmucientes.udacity.bakingapp.data.ImagesByIdMapUtil;
 import com.jmucientes.udacity.bakingapp.model.Recipe;
 import com.squareup.picasso.Picasso;
 
@@ -68,7 +67,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
     @Override
     public void onBindViewHolder(@NonNull RecipeViewHolder recipeViewHolder, int pos) {
-        bindImageById(mRecipeList.get(pos).getId(), recipeViewHolder.mRecipeImage);
+        bindImageById(mRecipeList.get(pos).getImage(), recipeViewHolder.mRecipeImage);
         recipeViewHolder.mTitleTv.setText(mRecipeList.get(pos).getName());
         recipeViewHolder.mServingsTv.setText(
                 String.format(
@@ -99,9 +98,9 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         void onRecipeClick(Recipe recipe);
     }
 
-    private void bindImageById(int id, ImageView imageView) {
+    private void bindImageById(String imageUri, ImageView imageView) {
         Picasso.get()
-                .load(ImagesByIdMapUtil.getImageUriFromId(id))
+                .load(imageUri)
                 .fit().centerCrop()
                 .placeholder(R.drawable.ic_photo_gray_64dp)
                 .error(R.drawable.ic_broken_image_gray_64dp)

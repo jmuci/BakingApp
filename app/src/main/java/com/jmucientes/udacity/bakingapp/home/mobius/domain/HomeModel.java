@@ -12,6 +12,7 @@ public abstract class HomeModel {
     public static final HomeModel DEFAULT = builder()
             .recipes(ImmutableList.of())
             .loading(true)
+            .refreshing(false)
             .build();
 
     @Nullable
@@ -19,12 +20,18 @@ public abstract class HomeModel {
 
     public abstract Boolean loading();
 
+    public abstract Boolean refreshing();
+
     public HomeModel withRecipes(ImmutableList<Recipe> recipes) {
         return toBuilder().recipes(recipes).build();
     }
 
     public HomeModel withLoading(Boolean loading) {
         return toBuilder().loading(loading).build();
+    }
+
+    public HomeModel withRefreshing(Boolean refreshing) {
+        return toBuilder().loading(refreshing).build();
     }
 
     public abstract Builder toBuilder();
@@ -37,6 +44,7 @@ public abstract class HomeModel {
     public abstract static class Builder {
         public abstract Builder recipes(ImmutableList<Recipe> recipes);
         public abstract Builder loading(Boolean loading);
+        public abstract Builder refreshing(Boolean refreshing);
 
         public abstract HomeModel build();
     }

@@ -26,7 +26,8 @@ public final class HomeLogic {
         return event.map(
                 recipeCardClicked -> onRecipeCardClicked(model, recipeCardClicked),
                 recipesLoaded -> onRecipesLoaded(model, recipesLoaded),
-                taskLoadingFailed -> onTaskLoadingFailed(model)
+                taskLoadingFailed -> onTaskLoadingFailed(model),
+                refreshRecipes -> onRequestRefreshRecipe(model)
         );
     }
 
@@ -39,13 +40,19 @@ public final class HomeLogic {
     }
 
     private static Next<HomeModel,HomeEffect> onRecipesLoaded(HomeModel model, HomeEvent.RecipesLoaded recipesLoadedEvent) {
-        if (recipesLoadedEvent.recipes().isEmpty() || recipesLoadedEvent.recipes().equals(model.recipes())) {
+        if (recipesLoadedEvent.recipes().isEmpty()) {
             return Next.noChange();
+        } else if (recipesLoadedEvent.recipes().equals(model.recipes())) {
+            return Next.next(model.withLoading(false).withRefreshing(false));
         }
-        return Next.next(model.withRecipes(recipesLoadedEvent.recipes()).withLoading(false));
+        return Next.next(model.withRecipes(recipesLoadedEvent.recipes()).withLoading(false).withRefreshing(false));
     }
 
     private static Next<HomeModel, HomeEffect> onTaskLoadingFailed(HomeModel model) {
-        return Next.next(model.withLoading(false), effects(showFeedback(FeedbackType.LOADING_ERROR)));
+        return Next.next(model.withLoading(false).withRefreshing(false), effects(showFeedback(FeedbackType.LOADING_ERROR)));
+    }
+
+    private static Next<HomeModel, HomeEffect> onRequestRefreshRecipe(HomeModel model) {
+        return Next.next(model.withLoading(true).withRefreshing(true), effects(requestRecipes()));
     }
 }

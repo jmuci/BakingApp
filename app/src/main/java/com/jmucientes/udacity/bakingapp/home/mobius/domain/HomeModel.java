@@ -11,7 +11,7 @@ public abstract class HomeModel {
 
     public static final HomeModel DEFAULT = builder()
             .recipes(ImmutableList.of())
-            .loading(false)
+            .loading(true)
             .build();
 
     @Nullable

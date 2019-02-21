@@ -65,7 +65,7 @@ public class HomeFragment extends DaggerFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.home_fragment, container, false);
+        View view = inflater.inflate(R.layout.home_fragment, container, false);
         mRecipeCardsRV = view.findViewById(R.id.recipes_recycler_view);
         mProgressBar = view.findViewById(R.id.progress_bar);
         mSwipeRefresh = view.findViewById(R.id.main_swipe_container);
@@ -77,8 +77,6 @@ public class HomeFragment extends DaggerFragment {
                 this::showErrorView);
 
         mController.connect(this::connectViews);
-
-        mSwipeRefresh.setOnRefreshListener(this::refreshDataSetFromNetwork);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -98,19 +96,6 @@ public class HomeFragment extends DaggerFragment {
 
         mRecipeCardsRV.setAdapter(mRecipeAdapter);
         return view;
-    }
-
-    private void refreshDataSetFromNetwork() {
-        // TODO Move this to mobius
-        mViewModel.refreshData().observe(this, (List<Recipe> recipeList) -> {
-             if (recipeList != null && recipeList.size() > 0) {
-                 mErrorView.setVisibility(View.GONE);
-                 mRecipeAdapter.updateDataSet(recipeList);
-             } else {
-                 Toast.makeText(this.getContext(), "Failed to contact server.", Toast.LENGTH_SHORT).show();
-             }
-             mSwipeRefresh.setRefreshing(false);
-         });
     }
 
     @Override
@@ -140,6 +125,7 @@ public class HomeFragment extends DaggerFragment {
                 // this will be called whenever there is a new model
                 if (model.recipes().size() > 0) {
                     mRecipeAdapter.updateDataSet(model.recipes());
+                    mErrorView.setVisibility(View.GONE);
                 }
 
                 if (model.loading()) {
@@ -147,6 +133,9 @@ public class HomeFragment extends DaggerFragment {
                 } else {
                     mProgressBar.setVisibility(View.GONE);
                 }
+
+                //Update Refreshing view for Pull to Refresh
+                mSwipeRefresh.setRefreshing(model.refreshing());
             }
 
             public void dispose() {
@@ -158,6 +147,7 @@ public class HomeFragment extends DaggerFragment {
 
     private void addUiListeners(Consumer<HomeEvent> eventConsumer) {
         mRecipeAdapter.setItemListener(recipe -> eventConsumer.accept(HomeEvent.recipeCardClicked(recipe)));
+        mSwipeRefresh.setOnRefreshListener(() -> eventConsumer.accept(HomeEvent.refreshRecipes()));
     }
 
     public void navigateToStepDetailsViewFragment(Recipe recipe) {

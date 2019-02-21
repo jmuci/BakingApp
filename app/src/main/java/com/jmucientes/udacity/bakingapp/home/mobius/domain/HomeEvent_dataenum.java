@@ -11,5 +11,5 @@ interface HomeEvent_dataenum {
     dataenum_case RecipeCardClicked(Recipe recipe);
     dataenum_case RecipesLoaded(ImmutableList<Recipe> recipes);
     dataenum_case TaskLoadingFailed();
-    //Pull to Refresh event
+    dataenum_case RefreshRecipes();
 }

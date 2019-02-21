@@ -132,8 +132,6 @@ public class HomeFragment extends DaggerFragment {
     }
 
     private Connection<HomeModel> connectViews(Consumer<HomeEvent> eventConsumer) {
-        // TODO send events to the consumer when the button is pressed
-        //button.setOnClickListener(view -> eventConsumer.accept(HomeEvent.buttonPressed()));
         addUiListeners(eventConsumer);
         return new Connection<HomeModel>() {
             public void accept(@NonNull HomeModel model) {
@@ -141,8 +139,13 @@ public class HomeFragment extends DaggerFragment {
                 Log.d(TAG, "connectViews().accept() Model: " + model.recipes());
                 // this will be called whenever there is a new model
                 if (model.recipes().size() > 0) {
-                    mProgressBar.setVisibility(View.GONE);
                     mRecipeAdapter.updateDataSet(model.recipes());
+                }
+
+                if (model.loading()) {
+                    mProgressBar.setVisibility(View.VISIBLE);
+                } else {
+                    mProgressBar.setVisibility(View.GONE);
                 }
             }
 
@@ -168,7 +171,6 @@ public class HomeFragment extends DaggerFragment {
     }
 
     public void showErrorView() {
-        mProgressBar.setVisibility(View.GONE);
         mErrorView.setVisibility(View.VISIBLE);
     }
 

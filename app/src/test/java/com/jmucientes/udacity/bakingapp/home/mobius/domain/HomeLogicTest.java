@@ -116,7 +116,7 @@ public class HomeLogicTest {
         HomeModel emptyHomeModel = HomeModel.DEFAULT;
         updateSpec.given(emptyHomeModel)
                 .when(HomeEvent.taskLoadingFailed())
-                .then(assertThatNext(hasNoModel(), hasEffects(showFeedback(FeedbackType.LOADING_ERROR))));
+                .then(assertThatNext(hasModel(emptyHomeModel.withLoading(false)), hasEffects(showFeedback(FeedbackType.LOADING_ERROR))));
     }
 
     private Recipe createRecipe(String name) {

@@ -42,10 +42,10 @@ public final class HomeLogic {
         if (recipesLoadedEvent.recipes().isEmpty() || recipesLoadedEvent.recipes().equals(model.recipes())) {
             return Next.noChange();
         }
-        return Next.next(model.withRecipes(recipesLoadedEvent.recipes()));
+        return Next.next(model.withRecipes(recipesLoadedEvent.recipes()).withLoading(false));
     }
 
     private static Next<HomeModel, HomeEffect> onTaskLoadingFailed(HomeModel model) {
-        return Next.dispatch(effects(showFeedback(FeedbackType.LOADING_ERROR)));
+        return Next.next(model.withLoading(false), effects(showFeedback(FeedbackType.LOADING_ERROR)));
     }
 }

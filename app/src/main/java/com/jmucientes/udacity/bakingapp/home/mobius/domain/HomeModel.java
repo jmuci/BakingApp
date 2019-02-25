@@ -31,7 +31,7 @@ public abstract class HomeModel {
     }
 
     public HomeModel withRefreshing(Boolean refreshing) {
-        return toBuilder().loading(refreshing).build();
+        return toBuilder().refreshing(refreshing).build();
     }
 
     public abstract Builder toBuilder();

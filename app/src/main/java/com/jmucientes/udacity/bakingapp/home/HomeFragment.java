@@ -1,7 +1,6 @@
 package com.jmucientes.udacity.bakingapp.home;
 
 import android.arch.lifecycle.ViewModelProvider;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.jmucientes.udacity.bakingapp.MainActivity;
 import com.jmucientes.udacity.bakingapp.R;
@@ -31,7 +29,6 @@ import com.spotify.mobius.Connection;
 import com.spotify.mobius.MobiusLoop;
 import com.spotify.mobius.functions.Consumer;
 
-import java.util.List;
 import java.util.Objects;
 
 import javax.inject.Inject;
@@ -101,7 +98,7 @@ public class HomeFragment extends DaggerFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(RecipeViewModel.class);
+        //mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(RecipeViewModel.class);
     }
 
     @Override

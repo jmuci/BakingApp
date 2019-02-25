@@ -69,7 +69,10 @@ public class HomeLogicTest {
                 .build();
         updateSpec.given(stateWithSomeRecipes)
                 .when(HomeEvent.recipesLoaded(receivedRecipes))
-                .then(assertThatNext(hasNothing()));
+                .then(assertThatNext(hasModel(stateWithSomeRecipes
+                .withRecipes(receivedRecipes)
+                .withLoading(false)
+                .withRefreshing(false))));
     }
 
     @Test
@@ -95,14 +98,10 @@ public class HomeLogicTest {
                 .refreshing(false)
                 .build();
 
-        HomeModel initialState = HomeModel.builder().recipes(of(createRecipe("Cheesecake"))).loading(false).build();
+        HomeModel initialState = HomeModel.builder().recipes(of(createRecipe("Cheesecake"))).loading(false).refreshing(true).build();
         updateSpec.given(initialState)
                 .when(HomeEvent.recipesLoaded(receivedRecipes))
-                .then(assertThatNext(hasModel(stateWithSomeRecipes
-                        .withRecipes(receivedRecipes)
-                        .withLoading(false)
-                        .withRefreshing(false)
-                ), hasNoEffects()));
+                .then(assertThatNext(hasModel(stateWithSomeRecipes), hasNoEffects()));
     }
 
     @Test

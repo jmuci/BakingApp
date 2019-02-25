@@ -106,9 +106,8 @@ Main epics coded while developing this app.
 * [X] Implement pull to refresh.
 * [X] Save Mobius state on configuration changes
 * [ ] Connect Mobius loop to ViewModel and clean up duplicated task and code.
-* [ ] Remove non-Rx network requests and clean up Repository class
+* [X] Remove non-Rx network requests and clean up Repository class
 * [ ] Add error handling to Mobius model, and use snackbar to show errors. 
-* [ ] Consider having connection as part of the model. 
-* [ ] Enable Home View in offline mode. 
+* [ ] Enable Home View in offline mode.
 * [ ] Write Unit Tests  
 * [X] Host JSON in own server/site/JSON host

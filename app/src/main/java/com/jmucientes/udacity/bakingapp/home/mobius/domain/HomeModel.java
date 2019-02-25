@@ -6,8 +6,10 @@ import com.google.auto.value.AutoValue;
 import com.google.common.collect.ImmutableList;
 import com.jmucientes.udacity.bakingapp.model.Recipe;
 
+import java.io.Serializable;
+
 @AutoValue
-public abstract class HomeModel {
+public abstract class HomeModel implements Serializable {
 
     public static final HomeModel DEFAULT = builder()
             .recipes(ImmutableList.of())

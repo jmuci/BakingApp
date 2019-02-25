@@ -41,6 +41,7 @@ import dagger.android.support.DaggerFragment;
 public class HomeFragment extends DaggerFragment {
 
     private static final String TAG = HomeFragment.class.getName();
+    public static final String HOME_MODEL_KEY = "HomeModelKey";
     private RecipeViewModel mViewModel;
     private RecyclerView mRecipeCardsRV;
     private SwipeRefreshLayout mSwipeRefresh;
@@ -77,6 +78,11 @@ public class HomeFragment extends DaggerFragment {
                 this::showErrorView);
 
         mController.connect(this::connectViews);
+
+        if (savedInstanceState != null) {
+            HomeModel homeModel = (HomeModel) savedInstanceState.getSerializable(HOME_MODEL_KEY);
+            mController.replaceModel(Objects.requireNonNull(homeModel));
+        }
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -164,4 +170,10 @@ public class HomeFragment extends DaggerFragment {
         mErrorView.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        HomeModel model = mController.getModel();
+        outState.putSerializable(HOME_MODEL_KEY, model);
+    }
 }

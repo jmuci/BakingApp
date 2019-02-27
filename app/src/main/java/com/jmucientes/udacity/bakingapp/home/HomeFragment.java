@@ -1,6 +1,5 @@
 package com.jmucientes.udacity.bakingapp.home;
 
-import android.arch.lifecycle.ViewModelProvider;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,7 +21,6 @@ import com.jmucientes.udacity.bakingapp.home.mobius.HomeInjector;
 import com.jmucientes.udacity.bakingapp.home.mobius.domain.HomeEvent;
 import com.jmucientes.udacity.bakingapp.home.mobius.domain.HomeModel;
 import com.jmucientes.udacity.bakingapp.home.view.RecipeAdapter;
-import com.jmucientes.udacity.bakingapp.home.view.RecipeViewModel;
 import com.jmucientes.udacity.bakingapp.model.Recipe;
 import com.jmucientes.udacity.bakingapp.recipedetailslist.RecipeDetailListFragment;
 import com.spotify.mobius.Connection;
@@ -39,15 +37,12 @@ public class HomeFragment extends DaggerFragment {
 
     private static final String TAG = HomeFragment.class.getName();
     public static final String HOME_MODEL_KEY = "HomeModelKey";
-    private RecipeViewModel mViewModel;
     private RecyclerView mRecipeCardsRV;
     private SwipeRefreshLayout mSwipeRefresh;
 
 
     @Inject
     RecipeAdapter mRecipeAdapter;
-    @Inject
-    ViewModelProvider.Factory mViewModelFactory;
     @Inject
     HomeInjector mHomeInjector;
 
@@ -104,7 +99,6 @@ public class HomeFragment extends DaggerFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(RecipeViewModel.class);
     }
 
     @Override

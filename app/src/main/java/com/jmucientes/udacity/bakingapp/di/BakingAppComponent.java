@@ -12,7 +12,6 @@ import dagger.android.support.AndroidSupportInjectionModule;
 @Component(modules = {
         AndroidSupportInjectionModule.class,
         BakingAppModule.class,
-        ViewModelsModule.class,
         NetworkModule.class,
         ActivityBindingModule.class
 })
